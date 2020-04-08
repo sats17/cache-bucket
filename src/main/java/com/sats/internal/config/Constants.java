@@ -1,4 +1,4 @@
-package com.sats.api.config;
+package com.sats.internal.config;
 
 public class Constants {
 

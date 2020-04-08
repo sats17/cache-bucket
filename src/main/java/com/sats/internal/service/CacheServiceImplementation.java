@@ -1,9 +1,9 @@
-package com.sats.api.service;
+package com.sats.internal.service;
 
 import java.util.LinkedHashMap;
 
-import com.sats.api.model.Cache;
-import com.sats.api.model.Storage;
+import com.sats.internal.model.Cache;
+import com.sats.internal.model.Storage;
 
 public class CacheServiceImplementation implements CacheServiceInterface {
 
@@ -38,6 +38,15 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 
 	public void cleanCache() {
 		cache.cleanCache();
+	}
+
+	public LinkedHashMap<Object, Storage> getAll() {
+		return cache.getCache();
+	}
+
+	public void deleteCacheByKey(Object key) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

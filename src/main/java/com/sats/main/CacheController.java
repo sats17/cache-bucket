@@ -1,10 +1,12 @@
-package com.sats.api.controller;
+package com.sats.main;
 
-import com.sats.api.model.Cache;
-import com.sats.api.service.CacheServiceImplementation;
-import com.sats.api.service.CacheServiceInterface;
+import com.sats.internal.model.Storage;
+import com.sats.internal.service.CacheServiceImplementation;
+import com.sats.internal.service.CacheServiceInterface;
 
-import static com.sats.api.config.Constants.CACHE_EXPIRY_TIME_LIMIT;
+import static com.sats.internal.config.Constants.CACHE_EXPIRY_TIME_LIMIT;
+
+import java.util.LinkedHashMap;
 
 public class CacheController {
 	
@@ -18,11 +20,11 @@ public class CacheController {
 
 	private CacheServiceInterface cacheService = new CacheServiceImplementation();
 	
-	public void setCache(Object key,Object value) {
+	public void setCache(String key,Object value) {
 		cacheService.setCache(key, value);
 	}
 	
-	public void setCache(Object key,Object value,Boolean timeExpire) {
+	public void setCache(String key,Object value,Boolean timeExpire) {
 		if(timeExpire) {
 			cacheService.setCacheWithTimeExpire(key, value);
 		}
@@ -32,8 +34,12 @@ public class CacheController {
 		
 	}
 	
-	public Object getCache(Object key) {
+	public Object getCache(String key) {
 		return cacheService.getCacheByKey(key);
+	}
+	
+	public LinkedHashMap<Object, Storage> getAll() {
+		return cacheService.getAll();
 	}
 	
 	public void clear() {

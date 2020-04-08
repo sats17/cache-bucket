@@ -1,5 +1,8 @@
-package com.sats.api.service;
+package com.sats.internal.service;
 
+import java.util.LinkedHashMap;
+
+import com.sats.internal.model.Storage;
 
 public interface CacheServiceInterface {
 	
@@ -10,6 +13,10 @@ public interface CacheServiceInterface {
 	void setCacheWithTimeExpire(Object key,Object value);
 	
 	Object getCacheByKey(Object key);
+	
+	LinkedHashMap<Object, Storage> getAll();
+	
+	void deleteCacheByKey(Object key);
 	
 	void cleanCache();
 	

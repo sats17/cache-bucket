@@ -1,6 +1,5 @@
-package com.sats.api.model;
+package com.sats.internal.model;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 

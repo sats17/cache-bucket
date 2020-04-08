@@ -1,10 +1,30 @@
-package com.sats.api.model;
+package com.sats.internal.model;
 
 public class Storage {
 
 	private long createdTimeStamp = System.currentTimeMillis();
+	
+	private long expiredTimeStamp;
 
 	private Object value;
+	
+	
+
+	public long getCreatedTimeStamp() {
+		return createdTimeStamp;
+	}
+
+	public void setCreatedTimeStamp(long createdTimeStamp) {
+		this.createdTimeStamp = createdTimeStamp;
+	}
+
+	public long getExpiredTimeStamp() {
+		return expiredTimeStamp;
+	}
+
+	public void setExpiredTimeStamp(long expiredTimeStamp) {
+		this.expiredTimeStamp = expiredTimeStamp;
+	}
 
 	public Storage(Object value) {
 		this.value = value;
@@ -19,15 +39,11 @@ public class Storage {
 	}
 
 	@Override
-	public String toString() {
-		return "Storage [createdTimeStamp=" + createdTimeStamp + ", value=" + value + "]";
-	}
-
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + (int) (createdTimeStamp ^ (createdTimeStamp >>> 32));
+		result = prime * result + (int) (expiredTimeStamp ^ (expiredTimeStamp >>> 32));
 		result = prime * result + ((value == null) ? 0 : value.hashCode());
 		return result;
 	}
@@ -43,6 +59,8 @@ public class Storage {
 		Storage other = (Storage) obj;
 		if (createdTimeStamp != other.createdTimeStamp)
 			return false;
+		if (expiredTimeStamp != other.expiredTimeStamp)
+			return false;
 		if (value == null) {
 			if (other.value != null)
 				return false;
@@ -50,5 +68,13 @@ public class Storage {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Storage [createdTimeStamp=" + createdTimeStamp + ", expiredTimeStamp=" + expiredTimeStamp + ", value="
+				+ value + "]";
+	}
+
+	
 
 }
