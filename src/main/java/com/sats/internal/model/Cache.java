@@ -6,9 +6,25 @@ import java.util.Map;
 public class Cache<K, V> {
 	
 	private long timeLimit;
+	
+	private long createdTimeStamp = System.currentTimeMillis();
 
 	private LinkedHashMap<K, Storage> cache = new LinkedHashMap<K, Storage>();
 
+	public Cache(final long timeLimit) {
+		this.timeLimit = timeLimit;
+		Thread t = new Thread(new Runnable() {
+			public void run() {
+				long totalTime = createdTimeStamp + timeLimit;
+				System.out.println("Before total time "+totalTime);
+				while(totalTime > System.currentTimeMillis()) {
+					System.out.println(getCache());	
+				}
+			}
+		});
+		t.start();
+	}
+	
 	public LinkedHashMap<K, Storage> getCache() {
 		return cache;
 	}

@@ -7,7 +7,7 @@ import com.sats.internal.model.Storage;
 
 public class CacheServiceImplementation implements CacheServiceInterface {
 
-	private Cache<Object, Object> cache = new Cache<Object, Object>();
+	private Cache<Object, Object> cache;
 	
 	public void setCache(Object key, Object value) {
 		if(cache.getCacheSize() > 3) {
@@ -20,7 +20,7 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	public void setTimeLimit(long timeLimit) {
-		cache.setTimeLimit(timeLimit);
+		cache =  new Cache<Object, Object>(timeLimit);
 	}
 
 	public void setCacheWithTimeExpire(Object key, Object value) {
