@@ -1,12 +1,14 @@
 package com.sats.internal.service;
 
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.sats.internal.model.Storage;
 
 public interface CacheServiceInterface {
 	
-	void setTimeLimit(long timeLimit);
+	void createCache();
+	
+	void createCacheTimeExpire(long timeLimit);
 
 	void setCache(Object key,Object value);
 	
@@ -14,7 +16,7 @@ public interface CacheServiceInterface {
 	
 	Object getCacheByKey(Object key);
 	
-	LinkedHashMap<Object, Storage> getAll();
+	ConcurrentHashMap<Object, Storage> getAll();
 	
 	void deleteCacheByKey(Object key);
 	

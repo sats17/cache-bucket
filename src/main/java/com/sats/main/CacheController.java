@@ -3,19 +3,16 @@ package com.sats.main;
 import com.sats.internal.model.Storage;
 import com.sats.internal.service.CacheServiceImplementation;
 import com.sats.internal.service.CacheServiceInterface;
-
-import static com.sats.internal.config.Constants.CACHE_EXPIRY_TIME_LIMIT;
-
-import java.util.LinkedHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CacheController {
 	
 	public CacheController(long timeLimit){
-		cacheService.setTimeLimit(timeLimit);
+		cacheService.createCacheTimeExpire(timeLimit);
 	}
 	
 	public CacheController() {
-		cacheService.setTimeLimit(CACHE_EXPIRY_TIME_LIMIT);
+		cacheService.createCache();
 	}
 
 	private CacheServiceInterface cacheService = new CacheServiceImplementation();
@@ -38,7 +35,7 @@ public class CacheController {
 		return cacheService.getCacheByKey(key);
 	}
 	
-	public LinkedHashMap<Object, Storage> getAll() {
+	public ConcurrentHashMap<Object, Storage> getAll() {
 		return cacheService.getAll();
 	}
 	
