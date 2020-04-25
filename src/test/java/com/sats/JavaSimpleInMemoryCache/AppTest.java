@@ -1,33 +1,26 @@
 package com.sats.JavaSimpleInMemoryCache;
 
-import java.lang.ModuleLayer.Controller;
-
 import com.sats.main.CacheController;
-
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest  {
-	
+public class AppTest {
+
 	public static void main(String[] args) throws InterruptedException {
-		CacheController controller = new CacheController(350);
-		CacheController controller2 = new CacheController();
-		controller.setCache("Hie", "Hello");
-		controller2.setCache("asa", "ava");
-		System.out.println(controller.getAll());
+		System.out.println("Running started");
+		CacheController controller2 = new CacheController(30000);
+		controller2.setCache("first", "1");
 		System.out.println(controller2.getAll());
-		controller.clear();
-		System.out.println("After delete");
-		System.out.println(controller.getAll());
+		controller2.setCache("second", "2");
 		System.out.println(controller2.getAll());
-		Thread.sleep(500);
+		controller2.setCache("third", "3");
 		System.out.println(controller2.getAll());
+		controller2.setCache("Four", "4");
+		System.out.println(controller2.getAll());
+		controller2.setCache("five", "5");
+		System.out.println(controller2.getAll());
+
 	}
-	
-	
-   
+
 }
