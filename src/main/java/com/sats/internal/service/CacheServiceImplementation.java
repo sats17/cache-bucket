@@ -1,8 +1,6 @@
 package com.sats.internal.service;
 
-import java.util.LinkedHashMap;
 import java.util.concurrent.ConcurrentHashMap;
-
 import com.sats.internal.model.Cache;
 import com.sats.internal.model.Storage;
 
@@ -11,8 +9,8 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	private Cache<Object, Object> cache;
 	
 	public void setCache(Object key, Object value) {
-		if(cache.getCacheSize() > 3) {
-			cache.removeOldestElement();
+		if(cache.getCacheSize() >= cache.getSize()) {
+			cache.removeOldestCache();
 			cache.setCache(key, value);
 		}
 		else {
@@ -21,16 +19,14 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	
-	public void createCache() {
+	public void createCache(int size) {
 		cache = new Cache<Object, Object>();
+		cache.setSize(size);
 	}
 	
-	public void createCacheTimeExpire(long timeLimit) {
+	public void createCache(int size,long timeLimit) {
 		cache =  new Cache<Object, Object>(timeLimit);
-	}
-
-	public void setCacheWithTimeExpire(Object key, Object value) {
-		//Under development
+		cache.setSize(size);
 	}
 
 	public Object getCacheByKey(Object key) {
@@ -42,17 +38,21 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 		}
 	}
 
-	public void cleanCache() {
-		cache.cleanCache();
+	public void clearCache() {
+		cache.clear();
 	}
 
 	public ConcurrentHashMap<Object, Storage> getAll() {
 		return cache.getCache();
 	}
 
-	public void deleteCacheByKey(Object key) {}
+	public void clearCache(Object key) {
+		cache.clear(key);
+	}
 
-
+	public void setCacheWithTimeExpire(Object key, Object value) {
+		//Under development
+	}
 	
 	
 	

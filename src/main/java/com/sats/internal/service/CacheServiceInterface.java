@@ -6,20 +6,20 @@ import com.sats.internal.model.Storage;
 
 public interface CacheServiceInterface {
 	
-	void createCache();
+	void createCache(int size);
 	
-	void createCacheTimeExpire(long timeLimit);
+	void createCache(int size,long timeLimit);
 
 	void setCache(Object key,Object value);
-	
-	void setCacheWithTimeExpire(Object key,Object value);
 	
 	Object getCacheByKey(Object key);
 	
 	ConcurrentHashMap<Object, Storage> getAll();
 	
-	void deleteCacheByKey(Object key);
+	void clearCache(Object key);
 	
-	void cleanCache();
+	void clearCache();
+	
+	void setCacheWithTimeExpire(Object key,Object value);
 	
 }

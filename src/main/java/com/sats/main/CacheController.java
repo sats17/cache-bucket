@@ -7,12 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CacheController {
 	
-	public CacheController(long timeLimit){
-		cacheService.createCacheTimeExpire(timeLimit);
+	
+	public CacheController(int size,long timeLimit){
+		cacheService.createCache(size,timeLimit);
 	}
 	
-	public CacheController() {
-		cacheService.createCache();
+	public CacheController(int size) {
+		cacheService.createCache(size);
 	}
 
 	private CacheServiceInterface cacheService = new CacheServiceImplementation();
@@ -39,8 +40,12 @@ public class CacheController {
 		return cacheService.getAll();
 	}
 	
+	public void clear(String key) {
+		cacheService.clearCache(key);
+	}
+	
 	public void clear() {
-		cacheService.cleanCache();
+		cacheService.clearCache();
 	}
 	
 }
