@@ -2,39 +2,74 @@ package com.sats.internal.model;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import static com.sats.internal.config.Constants.SCHEDULAR_INTIAL_DELAY;
+import static com.sats.internal.config.Constants.SCHEDULAR_PERIOD;
+
+/**
+ * @version 1.0.0
+ * @author sats17
+ *
+ * @param <K>
+ * @param <V>
+ */
 public class Cache<K, V> {
 
+	/**
+	 * Cache time limit variable.
+	 */
 	private long timeLimit;
-	
+
+	/**
+	 * Cache size variable.
+	 */
 	private int size;
 
+	/**
+	 * Cache map.
+	 */
 	private ConcurrentHashMap<K, Storage> cache = new ConcurrentHashMap<K, Storage>();
 
+	/**
+	 * Default constructor for cache.
+	 */
 	public Cache() {
 	}
 
+	/**
+	 * Parameterized constructor for cache. It will initialized scheduler once called.
+	 * @param timeLimit
+	 */
 	public Cache(long timeLimit) {
 		this.timeLimit = timeLimit;
-		initializeThread(timeLimit);
-
+		initializeScheduler(timeLimit);
 	}
 
-	private void initializeThread(final long timeLimit) {
-		Thread t = new Thread(new Runnable() {
+	/**
+	 * This method initialized the scheduler and checks if cache is empty or not every seconds.
+	 * if cache is not empty then it will call cacheAutoClear method.
+	 * @param timeLimit
+	 * @return void
+	 */
+	private void initializeScheduler(final long timeLimit) {
+		ScheduledExecutorService schedular = Executors.newSingleThreadScheduledExecutor();
+		schedular.scheduleAtFixedRate(new Runnable() {
 			public void run() {
-				while (true) {
-					if (cache.isEmpty()) {
-						continue;
-					} else {
-						cacheAutoClear();
-					}
+				if (!cache.isEmpty()) {
+					cacheAutoClear();
 				}
 			}
-		});
-		t.start();
+		}, SCHEDULAR_INTIAL_DELAY, SCHEDULAR_PERIOD, TimeUnit.MILLISECONDS);
 	}
 
+	/**
+	 * This method iterate over cache map and compare every storage objects with it's created time stamp and current
+	 * time stamp. If created time stamp  is less than current time stamp then it will clear that cache by it's key.
+	 * @return void
+	 */
 	private void cacheAutoClear() {
 		for (Map.Entry<K, Storage> entry : cache.entrySet()) {
 			K key = entry.getKey();
@@ -47,44 +82,86 @@ public class Cache<K, V> {
 		}
 	}
 
+	/**
+	 * This method return all cache.
+	 * @return ConcurrentHashMap<K, Storage>
+	 */
 	public ConcurrentHashMap<K, Storage> getCache() {
 		return this.cache;
 	}
-	
-	
 
+	/**
+	 * This method return size of cache.
+	 * @return size
+	 */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * This method sets cache size.
+	 * @param size
+	 * @return void
+	 */
 	public void setSize(int size) {
 		this.size = size;
 	}
 
+	/**
+	 * This method get cache time limit.
+	 * @return timeLimit
+	 */
 	public long getTimeLimit() {
 		return timeLimit;
 	}
 
+	/**
+	 * This method set cache time limit.
+	 * @param timeLimit
+	 * @return void
+	 */
 	public void setTimeLimit(long timeLimit) {
 		this.timeLimit = timeLimit;
 	}
 
+	/**
+	 * This method stores key and value in concurrentHashMap.
+	 * @param key
+	 * @param value
+	 * @return void
+	 */
 	public void setCache(K key, V value) {
 		this.cache.put(key, new Storage(value));
 	}
 
+	/**
+	 * This remove cache by key from concurrentHashMap.
+	 * @param key
+	 * @return void
+	 */
 	public void clear(K key) {
 		this.cache.remove(key);
 	}
 
+	/**
+	 * This method return current size of cache.
+	 * @return size
+	 */
 	public int getCacheSize() {
 		return this.cache.size();
 	}
 
+	/**
+	 * This method clear cache.
+	 */
 	public void clear() {
 		this.cache.clear();
 	}
 
+	/**
+	 * This method remove oldest element from cache.
+	 * @return void
+	 */
 	public void removeOldestCache() {
 		long greatestTimestamp = System.currentTimeMillis();
 		K removalKey = null;
@@ -119,7 +196,7 @@ public class Cache<K, V> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cache other = (Cache) obj;
+		Cache<K, V> other = (Cache) obj;
 		if (cache == null) {
 			if (other.cache != null)
 				return false;
@@ -130,6 +207,4 @@ public class Cache<K, V> {
 		return true;
 	}
 
-	
-	
 }

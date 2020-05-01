@@ -1,31 +1,67 @@
 package com.sats.internal.model;
 
+/**
+ * @version 1.0.0
+ * @author sats17
+ *
+ */
 public class Storage {
 
+	/**
+	 * Cache created timestamp.
+	 */
 	private long createdTimeStamp = System.currentTimeMillis();
 
+	/**
+	 * Cache value
+	 */
 	private Object value;
 
+	/**
+	 * This method returns cache created time
+	 * @return createdTimeStamp
+	 */
 	public long getCreatedTimeStamp() {
 		return createdTimeStamp;
 	}
 
+	/**
+	 * This method cache created timestamp.
+	 * @param createdTimeStamp
+	 * @return void
+	 */
 	public void setCreatedTimeStamp(long createdTimeStamp) {
 		this.createdTimeStamp = createdTimeStamp;
 	}
 
+	/**
+	 * Constructor that stores cache value.
+	 * @param value
+	 */
 	public Storage(Object value) {
 		this.value = value;
 	}
 
+	/**
+	 * This method return cache value
+	 * @return value
+	 */
 	public Object getValue() {
 		return value;
 	}
 
+	/**
+	 * This method set cache value.
+	 * @param value
+	 */
 	public void setValue(Object value) {
 		this.value = value;
 	}
 
+	/**
+	 * Storage hashcode
+	 * @return int
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -35,6 +71,11 @@ public class Storage {
 		return result;
 	}
 
+	/**
+	 * Storage equals
+	 * @param obj
+	 * @return boolean
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -54,6 +95,10 @@ public class Storage {
 		return true;
 	}
 
+	/**
+	 * Storage toString.
+	 * @return String
+	 */
 	@Override
 	public String toString() {
 		return "Storage [createdTimeStamp=" + createdTimeStamp + ", value=" + value + "]";
