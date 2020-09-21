@@ -1,4 +1,4 @@
-# InMemoryCache
+# In Memory Serverside Cache
 Simple In-Memory java cache library.
 <br>
 ## How to use
