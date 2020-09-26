@@ -1,18 +1,15 @@
-package com.sats.main;
+package com.sats.caching.internal.services;
 
-import com.sats.internal.model.Storage;
-import com.sats.internal.service.CacheServiceImplementation;
-import com.sats.internal.service.CacheServiceInterface;
+import java.util.HashMap;
 
-import java.lang.reflect.Constructor;
-import java.util.concurrent.ConcurrentHashMap;
+import com.sats.caching.extern.Cache;
 
 /**
  * @version 1.0.0
  * @author sats17
  * 
  */
-public class CacheController {
+public class CacheController implements Cache {
 	
 	
 	/**
@@ -77,7 +74,7 @@ public class CacheController {
 	 * This method return concurrent hashmap of all stored cache.
 	 * @return ConcurrentHashMap<Object, Storage>
 	 */
-	public ConcurrentHashMap<Object, Storage> getAll() {
+	public HashMap<Object, Object> getAll() {
 		return cacheService.getAll();
 	}
 	
@@ -96,6 +93,10 @@ public class CacheController {
 	 */
 	public void clear() {
 		cacheService.clearCache();
+	}
+	
+	public void check() {
+		System.out.println("a");
 	}
 	
 }

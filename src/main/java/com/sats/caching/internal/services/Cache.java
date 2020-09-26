@@ -1,13 +1,15 @@
-package com.sats.internal.model;
+package com.sats.caching.internal.services;
 
+import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
+import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
+
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static com.sats.internal.config.Constants.SCHEDULAR_INTIAL_DELAY;
-import static com.sats.internal.config.Constants.SCHEDULAR_PERIOD;
 
 /**
  * @version 1.0.0
@@ -16,7 +18,7 @@ import static com.sats.internal.config.Constants.SCHEDULAR_PERIOD;
  * @param <K>
  * @param <V>
  */
-public class Cache<K, V> {
+class Cache<K, V> {
 
 	/**
 	 * Cache time limit variable.
@@ -31,12 +33,13 @@ public class Cache<K, V> {
 	/**
 	 * Cache map.
 	 */
-	private ConcurrentHashMap<K, Storage> cache = new ConcurrentHashMap<K, Storage>();
+	private ConcurrentHashMap<K, Storage> cache;
 
 	/**
 	 * Default constructor for cache.
 	 */
 	public Cache() {
+		cache = new ConcurrentHashMap<K, Storage>(); 
 	}
 
 	/**
@@ -44,6 +47,7 @@ public class Cache<K, V> {
 	 * @param timeLimit
 	 */
 	public Cache(long timeLimit) {
+		cache = new ConcurrentHashMap<K, Storage>(); 
 		this.timeLimit = timeLimit;
 		initializeScheduler(timeLimit);
 	}
@@ -86,8 +90,14 @@ public class Cache<K, V> {
 	 * This method return all cache.
 	 * @return ConcurrentHashMap<K, Storage>
 	 */
-	public ConcurrentHashMap<K, Storage> getCache() {
-		return this.cache;
+	public HashMap<K, Object> getCache() {
+		HashMap<K, Object> returningObject = new HashMap<K, Object>();
+		for (Map.Entry<K, Storage> entry : this.cache.entrySet()) {
+		    K key = (K) entry.getKey().toString();
+		    Storage value = entry.getValue();
+		    returningObject.put(key, value);
+		}
+		return returningObject;
 	}
 
 	/**

@@ -1,15 +1,14 @@
-package com.sats.internal.service;
+package com.sats.caching.internal.services;
 
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
-import com.sats.internal.model.Cache;
-import com.sats.internal.model.Storage;
 
 /**
  * @version 1.0.0
  * @author sats17
  *
  */
-public class CacheServiceImplementation implements CacheServiceInterface {
+class CacheServiceImplementation implements CacheServiceInterface {
 
 	/**
 	 * Declared cache object.
@@ -83,8 +82,8 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 * 
 	 * @return ConcurrentHashMap<Object, Storage>
 	 */
-	public ConcurrentHashMap<Object, Storage> getAll() {
-		return cache.getCache();
+	public HashMap<Object, Object> getAll() {
+		return cache.getCache(); 
 	}
 
 	/**

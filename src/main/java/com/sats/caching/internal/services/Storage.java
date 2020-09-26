@@ -1,11 +1,11 @@
-package com.sats.internal.model;
+package com.sats.caching.internal.services;
 
 /**
  * @version 1.0.0
  * @author sats17
  *
  */
-public class Storage {
+class Storage {
 
 	/**
 	 * Cache created timestamp.
