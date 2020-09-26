@@ -8,7 +8,7 @@ package com.sats.caching.internal.services;
 class Storage {
 
 	/**
-	 * Cache created timestamp.
+	 * Timestamp set in milliseconds when Storage creates
 	 */
 	private long createdTimeStamp = System.currentTimeMillis();
 

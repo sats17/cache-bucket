@@ -24,7 +24,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void setCache(Object key, Object value) {
-		if (cache.getCacheSize() >= cache.getSize()) {
+		if (cache.getTotalEntries() >= cache.getBucketSize()) {
 			cache.removeOldestCache();
 			cache.setCache(key, value);
 		} else {
@@ -41,7 +41,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public void createCache(int size) {
 		cache = new Cache<Object, Object>();
-		cache.setSize(size);
+		cache.setBucketSize(size); 
 	}
 
 	/**
@@ -53,7 +53,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public void createCache(int size, long timeLimit) {
 		cache = new Cache<Object, Object>(timeLimit);
-		cache.setSize(size);
+		cache.setBucketSize(size);
 	}
 
 	/**
@@ -62,21 +62,15 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param key
 	 * @return cache
 	 */
-	public Object getCacheByKey(Object key) {
+	public Object getCacheByKey(String key) {
 		if (cache.getCache().containsKey(key)) {
-			return cache.getCache().get(key);
+			Storage storage = cache.getCache(key);
+			return storage.getValue();
 		} else {
 			return null;
 		}
 	}
-
-	/**
-	 * This method clear all cache.
-	 */
-	public void clearCache() {
-		cache.clear();
-	}
-
+	
 	/**
 	 * This method returns all object store in cache.
 	 * 
@@ -84,6 +78,13 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public HashMap<Object, Object> getAll() {
 		return cache.getCache(); 
+	}
+
+	/**
+	 * This method clear all cache.
+	 */
+	public void clearCache() {
+		cache.clear();
 	}
 
 	/**
@@ -103,6 +104,30 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public void setCacheWithTimeExpire(Object key, Object value) {
 		// Under development
+	}
+
+	/**
+	 * Method return cache size.
+	 */
+	@Override
+	public int getBucketSize() {
+		return cache.getBucketSize();
+	}
+
+	@Override
+	public long getBucketTimeLimit() {
+		return cache.getTimeLimit();
+	}
+
+	@Override
+	public void setBucketTimeLimit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getTotalEntries() {
+		return cache.getTotalEntries();
 	}
 
 }

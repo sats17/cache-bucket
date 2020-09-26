@@ -1,7 +1,7 @@
 package com.sats.JavaSimpleInMemoryCache;
 
 
-import com.sats.caching.extern.Cache;
+import com.sats.caching.extern.CacheBucket;
 import com.sats.caching.internal.services.CacheController;
 /**
  * Unit test for simple App.
@@ -14,8 +14,8 @@ public class AppTest {
 
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Running started");
-		Cache controller2 = new CacheController(10,10000);
-		Cache controller = new CacheController(12,10000);
+		CacheBucket controller2 = new CacheController(10,10000);
+		CacheBucket controller = new CacheController(12,10000);
 		controller.setCache("first", "1");
 		controller.setCache("second", "1");
 		controller.setCache("third", "1");

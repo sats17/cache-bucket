@@ -34,7 +34,8 @@ class Cache<K, V> {
 	 * Cache map.
 	 */
 	private ConcurrentHashMap<K, Storage> cache;
-
+	
+	
 	/**
 	 * Default constructor for cache.
 	 */
@@ -78,7 +79,7 @@ class Cache<K, V> {
 		for (Map.Entry<K, Storage> entry : cache.entrySet()) {
 			K key = entry.getKey();
 			Storage value = entry.getValue();
-			long createdTimeStamp = value.getCreatedTimeStamp() + timeLimit;
+			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeLimit;
 			long currentTimeStamp = System.currentTimeMillis();
 			if (createdTimeStamp < currentTimeStamp) {
 				clear(key);
@@ -87,7 +88,8 @@ class Cache<K, V> {
 	}
 
 	/**
-	 * This method return all cache.
+	 * This method returns all cache, it get all cache from concurrentHashMap and
+	 * push in into HashMap.
 	 * @return ConcurrentHashMap<K, Storage>
 	 */
 	public HashMap<K, Object> getCache() {
@@ -99,13 +101,22 @@ class Cache<K, V> {
 		}
 		return returningObject;
 	}
+	
+	/**
+	 * 
+	 * @param key : Unique which stores in bucket for particular cache.
+	 * @return returns Cache Storage.
+	 */
+	public Storage getCache(String key) {
+		return cache.get(key);
+	}
 
 	/**
 	 * This method return size of cache.
 	 * @return size
 	 */
-	public int getSize() {
-		return size;
+	public int getBucketSize() {
+		return this.size;
 	}
 
 	/**
@@ -113,7 +124,7 @@ class Cache<K, V> {
 	 * @param size
 	 * @return void
 	 */
-	public void setSize(int size) {
+	public void setBucketSize(int size) {
 		this.size = size;
 	}
 
@@ -122,7 +133,7 @@ class Cache<K, V> {
 	 * @return timeLimit
 	 */
 	public long getTimeLimit() {
-		return timeLimit;
+		return this.timeLimit;
 	}
 
 	/**
@@ -154,16 +165,16 @@ class Cache<K, V> {
 	}
 
 	/**
-	 * This method return current size of cache.
+	 * This method return total number of keys present in cache.
 	 * @return size
 	 */
-	public int getCacheSize() {
+	public int getTotalEntries() {
 		return this.cache.size();
 	}
 
 	/**
 	 * This method clear cache.
-	 */
+	*/
 	public void clear() {
 		this.cache.clear();
 	}
@@ -171,7 +182,7 @@ class Cache<K, V> {
 	/**
 	 * This method remove oldest element from cache.
 	 * @return void
-	 */
+	*/
 	public void removeOldestCache() {
 		long greatestTimestamp = System.currentTimeMillis();
 		K removalKey = null;

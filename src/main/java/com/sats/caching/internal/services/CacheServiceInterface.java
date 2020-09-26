@@ -11,13 +11,15 @@ import java.util.concurrent.ConcurrentHashMap;
 interface CacheServiceInterface {
 
 	/**
-	 * @param size
+	 * Creates cache object with given size.
+	 * @param size : This size defines that this total number of cache can be store.
 	 */
 	void createCache(int size);
 
 	/**
-	 * @param size
-	 * @param timeLimit
+	 * Creates cache object with given size and time limit.
+	 * @param size : This size defines that this total number of cache can be store.
+	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
 	 */
 	void createCache(int size, long timeLimit);
 
@@ -31,7 +33,7 @@ interface CacheServiceInterface {
 	 * @param key
 	 * @return Object
 	 */
-	Object getCacheByKey(Object key);
+	Object getCacheByKey(String key);
 
 	/**
 	 * @return
@@ -49,9 +51,28 @@ interface CacheServiceInterface {
 	void clearCache();
 
 	/**
+	 * Future implementation, where each cache can have their own time expiration
 	 * @param key
 	 * @param value
 	 */
 	void setCacheWithTimeExpire(Object key, Object value);
-
+	
+	/**
+	 * returns total cache bucket size.
+	 */
+	int getBucketSize();
+	
+	/**
+	 * 
+	 * @return return total entries currently present in cache bucket.
+	 */
+	int getTotalEntries();
+	
+	/**
+	 * 
+	 * @return Cache expiration time, which was set at cache bucket creation time. 
+	 */
+	long getBucketTimeLimit();
+	
+	void setBucketTimeLimit();
 }
