@@ -5,7 +5,7 @@ package com.sats.caching.internal.services;
  * @author sats17
  *
  */
-class Storage {
+class CacheEntries {
 
 	/**
 	 * Timestamp set in milliseconds when Storage creates
@@ -38,7 +38,7 @@ class Storage {
 	 * Constructor that stores cache value.
 	 * @param value
 	 */
-	public Storage(Object value) {
+	public CacheEntries(Object value) {
 		this.value = value;
 	}
 
@@ -84,7 +84,7 @@ class Storage {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Storage other = (Storage) obj;
+		CacheEntries other = (CacheEntries) obj;
 		if (createdTimeStamp != other.createdTimeStamp)
 			return false;
 		if (value == null) {

@@ -13,7 +13,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	/**
 	 * Declared cache object.
 	 */
-	private Cache<Object, Object> cache;
+	private Bucket<Object, Object> cache;
 
 	/**
 	 * This method set cache. First it check if cache is full or not, if it is full
@@ -40,7 +40,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void createCache(int size) {
-		cache = new Cache<Object, Object>();
+		cache = new Bucket<Object, Object>();
 		cache.setBucketSize(size); 
 	}
 
@@ -52,7 +52,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param timeLimit
 	 */
 	public void createCache(int size, long timeLimit) {
-		cache = new Cache<Object, Object>(timeLimit);
+		cache = new Bucket<Object, Object>(timeLimit);
 		cache.setBucketSize(size);
 	}
 
@@ -64,7 +64,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public Object getCacheByKey(String key) {
 		if (cache.getCache().containsKey(key)) {
-			Storage storage = cache.getCache(key);
+			CacheEntries storage = cache.getCache(key);
 			return storage.getValue();
 		} else {
 			return null;

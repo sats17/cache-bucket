@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * @param <K>
  * @param <V>
  */
-class Cache<K, V> {
+class Bucket<K, V> {
 
 	/**
 	 * Cache time limit variable.
@@ -33,22 +33,22 @@ class Cache<K, V> {
 	/**
 	 * Cache map.
 	 */
-	private ConcurrentHashMap<K, Storage> cache;
+	private ConcurrentHashMap<K, CacheEntries> cache;
 	
 	
 	/**
 	 * Default constructor for cache.
 	 */
-	public Cache() {
-		cache = new ConcurrentHashMap<K, Storage>(); 
+	public Bucket() {
+		cache = new ConcurrentHashMap<K, CacheEntries>(); 
 	}
 
 	/**
 	 * Parameterized constructor for cache. It will initialized scheduler once called.
 	 * @param timeLimit
 	 */
-	public Cache(long timeLimit) {
-		cache = new ConcurrentHashMap<K, Storage>(); 
+	public Bucket(long timeLimit) {
+		cache = new ConcurrentHashMap<K, CacheEntries>(); 
 		this.timeLimit = timeLimit;
 		initializeScheduler(timeLimit);
 	}
@@ -76,9 +76,9 @@ class Cache<K, V> {
 	 * @return void
 	 */
 	private void cacheAutoClear() {
-		for (Map.Entry<K, Storage> entry : cache.entrySet()) {
+		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
 			K key = entry.getKey();
-			Storage value = entry.getValue();
+			CacheEntries value = entry.getValue();
 			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeLimit;
 			long currentTimeStamp = System.currentTimeMillis();
 			if (createdTimeStamp < currentTimeStamp) {
@@ -94,9 +94,9 @@ class Cache<K, V> {
 	 */
 	public HashMap<String, Object> getCache() {
 		HashMap<String, Object> returningObject = new HashMap<String, Object>();
-		for (Map.Entry<K, Storage> entry : this.cache.entrySet()) {
+		for (Map.Entry<K, CacheEntries> entry : this.cache.entrySet()) {
 		    String key = entry.getKey().toString();
-		    Storage value = entry.getValue();
+		    CacheEntries value = entry.getValue();
 		    returningObject.put(key, value);
 		}
 		return returningObject;
@@ -107,7 +107,7 @@ class Cache<K, V> {
 	 * @param key : Unique which stores in bucket for particular cache.
 	 * @return returns Cache Storage.
 	 */
-	public Storage getCache(String key) {
+	public CacheEntries getCache(String key) {
 		return cache.get(key);
 	}
 
@@ -152,7 +152,7 @@ class Cache<K, V> {
 	 * @return void
 	 */
 	public void setCache(K key, V value) {
-		this.cache.put(key, new Storage(value));
+		this.cache.put(key, new CacheEntries(value));
 	}
 
 	/**
@@ -186,7 +186,7 @@ class Cache<K, V> {
 	public void removeOldestCache() {
 		long greatestTimestamp = System.currentTimeMillis();
 		K removalKey = null;
-		for (Map.Entry<K, Storage> entry : cache.entrySet()) {
+		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
 			if (entry.getValue().getCreatedTimeStamp() <= greatestTimestamp) {
 				greatestTimestamp = entry.getValue().getCreatedTimeStamp();
 			}
@@ -217,7 +217,7 @@ class Cache<K, V> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Cache<K, V> other = (Cache) obj;
+		Bucket<K, V> other = (Bucket) obj;
 		if (cache == null) {
 			if (other.cache != null)
 				return false;

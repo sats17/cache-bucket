@@ -6,9 +6,6 @@ import com.sats.caching.internal.services.CacheController;
 /**
  * Unit test for simple App.
  */
-class abc {
-	abc(){};
-}
 
 public class AppTest {
 
