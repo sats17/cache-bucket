@@ -38,7 +38,7 @@ interface CacheServiceInterface {
 	/**
 	 * @return
 	 */
-	HashMap<Object, Object> getAll();
+	HashMap<String, Object> getAll();
 
 	/**
 	 * @param key

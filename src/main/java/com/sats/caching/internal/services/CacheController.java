@@ -74,7 +74,7 @@ public class CacheController implements CacheBucket {
 	 * This method return concurrent hashmap of all stored cache.
 	 * @return ConcurrentHashMap<Object, Storage>
 	 */
-	public HashMap<Object, Object> getAll() {
+	public HashMap<String, Object> getAll() {
 		return cacheService.getAll();
 	}
 	

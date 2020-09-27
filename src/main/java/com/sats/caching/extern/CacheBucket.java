@@ -28,7 +28,7 @@ public interface CacheBucket {
 	 */
 	public Object getCache(String key);
 	
-	public HashMap<Object, Object> getAll();
+	public HashMap<String, Object> getAll();
 	
 	public int getBucketSize();
 	

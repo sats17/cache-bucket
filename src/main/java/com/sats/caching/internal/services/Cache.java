@@ -92,10 +92,10 @@ class Cache<K, V> {
 	 * push in into HashMap.
 	 * @return ConcurrentHashMap<K, Storage>
 	 */
-	public HashMap<K, Object> getCache() {
-		HashMap<K, Object> returningObject = new HashMap<K, Object>();
+	public HashMap<String, Object> getCache() {
+		HashMap<String, Object> returningObject = new HashMap<String, Object>();
 		for (Map.Entry<K, Storage> entry : this.cache.entrySet()) {
-		    K key = (K) entry.getKey().toString();
+		    String key = entry.getKey().toString();
 		    Storage value = entry.getValue();
 		    returningObject.put(key, value);
 		}

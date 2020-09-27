@@ -76,7 +76,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * 
 	 * @return ConcurrentHashMap<Object, Storage>
 	 */
-	public HashMap<Object, Object> getAll() {
+	public HashMap<String, Object> getAll() {
 		return cache.getCache(); 
 	}
 
