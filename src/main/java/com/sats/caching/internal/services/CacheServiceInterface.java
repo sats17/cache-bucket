@@ -1,7 +1,6 @@
 package com.sats.caching.internal.services;
 
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * @version 1.0.0
@@ -38,7 +37,7 @@ interface CacheServiceInterface {
 	/**
 	 * @return
 	 */
-	HashMap<String, Object> getAll();
+	Map<String, Object> getAll();
 
 	/**
 	 * @param key

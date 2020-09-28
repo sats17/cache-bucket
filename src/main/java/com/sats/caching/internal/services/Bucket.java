@@ -33,14 +33,13 @@ class Bucket<K, V> {
 	/**
 	 * Cache map.
 	 */
-	private ConcurrentHashMap<K, CacheEntries> cache;
+	private ConcurrentHashMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
 	
 	
 	/**
 	 * Default constructor for cache.
 	 */
 	public Bucket() {
-		cache = new ConcurrentHashMap<K, CacheEntries>(); 
 	}
 
 	/**
@@ -48,7 +47,6 @@ class Bucket<K, V> {
 	 * @param timeLimit
 	 */
 	public Bucket(long timeLimit) {
-		cache = new ConcurrentHashMap<K, CacheEntries>(); 
 		this.timeLimit = timeLimit;
 		initializeScheduler(timeLimit);
 	}
@@ -92,8 +90,8 @@ class Bucket<K, V> {
 	 * push in into HashMap.
 	 * @return ConcurrentHashMap<K, Storage>
 	 */
-	public HashMap<String, Object> getCache() {
-		HashMap<String, Object> returningObject = new HashMap<String, Object>();
+	public Map<String, Object> getCache() {
+		Map<String, Object> returningObject = new HashMap<>();
 		for (Map.Entry<K, CacheEntries> entry : this.cache.entrySet()) {
 		    String key = entry.getKey().toString();
 		    CacheEntries value = entry.getValue();

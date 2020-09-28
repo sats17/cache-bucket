@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CacheController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServerSide-InMemory-Cache</a> &gt; <a href="index.source.html" class="el_package">com.sats.caching.internal.services</a> &gt; <span class="el_source">CacheController.java</span></div><h1>CacheController.java</h1><pre class="source lang-java linenums">package com.sats.caching.internal.services;
+
+import java.util.Map;
+
+import com.sats.caching.extern.CacheBucket;
+
+/**
+ * 
+ * @version 1.0.0
+ * @author sats17
+ * 
+ */
+public class CacheController implements CacheBucket {
+	
+	
+	/**
+	 * This constructor creates the Cache Bucket with size and time limit.
+	 * @param size : Total Number of cache entries can be store into Cache Bucket.
+	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
+	 */
+<span class="fc" id="L21">	public CacheController(int size,long timeLimit){</span>
+<span class="fc" id="L22">		cacheService.createCache(size,timeLimit);</span>
+<span class="fc" id="L23">	}</span>
+	
+	/**
+	 * This constructor creates the cache bucket with size.
+	 * @param size : Total Number of cache entries can be store into Cache Bucket.
+	 */
+<span class="fc" id="L29">	public CacheController(int size) {</span>
+<span class="fc" id="L30">		cacheService.createCache(size);</span>
+<span class="fc" id="L31">	}</span>
+
+	/**
+	 *  Object creation of cacheService class.
+	 */
+<span class="fc" id="L36">	private CacheServiceInterface cacheService = new CacheServiceImplementation();</span>
+	
+	/**
+	 * This method set cache into Cache Bucket.
+	 * @param key : Unique cache key { Type: String}.
+	 * @param value : Cache value that you want store into bucket.
+	 * @return void : This method returns nothing.
+	 */
+	public void setCache(String key,Object value) {
+<span class="fc" id="L45">		cacheService.setCache(key, value);</span>
+<span class="fc" id="L46">	}</span>
+	
+	/**
+	 * Set cache, there is different time limit for every object in cache.
+	 * Currently not implemented
+	 * @param key
+	 * @param value
+	 * @param timeExpire
+	 */
+	public void setCache(String key,Object value,Boolean timeExpire) {
+<span class="nc bnc" id="L56" title="All 2 branches missed.">		if(timeExpire) {</span>
+<span class="nc" id="L57">			cacheService.setCacheWithTimeExpire(key, value);</span>
+		}
+		else {
+<span class="nc" id="L60">			cacheService.setCache(key, value);</span>
+		}
+		
+<span class="nc" id="L63">	}</span>
+	
+	/**
+	 * This method returns Cache from Cache bucket for given key.
+	 * @param key : Unique key that present in cache bucket.
+	 * @return Object : Cache Object. You need cast it with your cache type.
+	 */
+	public Object getCache(String key) {
+<span class="fc" id="L71">		return cacheService.getCacheByKey(key);</span>
+	}
+	
+	/**
+	 * This method returns all cache from Cache bucket.
+	 * @return HashMap&lt;String, Object&gt; : Returns all keys and cache.
+	 */
+	public Map&lt;String, Object&gt; getAll() {
+<span class="nc" id="L79">		return cacheService.getAll();</span>
+	}
+	
+	/**
+	 * This method gives Cache bucket size.
+	 * @return integer : Bucket size.
+	 */
+	@Override
+	public int getBucketSize() {
+<span class="fc" id="L88">		return cacheService.getBucketSize();</span>
+	}
+
+	/**
+	 * This method clears the cache for given key if it is presents in Cache bucket. 
+	 * @param key : Unique cache key.
+	 * @return void : Method returns nothing.
+	 */
+	public void clear(String key) {
+<span class="nc" id="L97">		cacheService.clearCache(key);</span>
+<span class="nc" id="L98">	}</span>
+	
+	/**
+	 * This method Clear all cache from cache bucket.
+	 * @return void : Method returns nothing.
+	 */
+	public void clear() {
+<span class="nc" id="L105">		cacheService.clearCache();</span>
+<span class="nc" id="L106">	}</span>
+
+	/**
+	 * This method returns the cache expire time limit for Cache Bucket.
+	 * @return long : Return time in milliseconds.
+	 */
+	@Override
+	public long getBucketTimeLimit() {
+<span class="fc" id="L114">		return cacheService.getBucketTimeLimit();</span>
+	}
+
+	/**
+	 * To be implemented
+	 * @return void: Method returns nothing.
+	 */
+	@Override
+	public void setBucketTimeLimit() {
+		
+<span class="nc" id="L124">	}</span>
+
+	/**
+	 * This method gives total number of cache entries present in Cache Bucket.
+	 * @return integer : Returns count of total cache.
+	 */
+	@Override
+	public int getTotalEntries() {
+<span class="nc" id="L132">		return cacheService.getTotalEntries();</span>
+	}
+	
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

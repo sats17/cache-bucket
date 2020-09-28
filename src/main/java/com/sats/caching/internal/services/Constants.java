@@ -7,9 +7,8 @@ package com.sats.caching.internal.services;
  */
 class Constants {
 
-	public static long CACHE_EXPIRY_TIME_LIMIT = 300; 
-	public int CACHE_SIZE;
-	public static long SCHEDULAR_INTIAL_DELAY = 0;
-	public static long SCHEDULAR_PERIOD = 1;
+	public static final long CACHE_EXPIRY_TIME_LIMIT = 300; 
+	public static final long SCHEDULAR_INTIAL_DELAY = 0;
+	public static final long SCHEDULAR_PERIOD = 1;
 	
 }

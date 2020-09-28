@@ -1,7 +1,6 @@
 package com.sats.caching.internal.services;
 
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
 
 /**
  * @version 1.0.0
@@ -76,7 +75,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * 
 	 * @return ConcurrentHashMap<Object, Storage>
 	 */
-	public HashMap<String, Object> getAll() {
+	public Map<String, Object> getAll() {
 		return cache.getCache(); 
 	}
 
