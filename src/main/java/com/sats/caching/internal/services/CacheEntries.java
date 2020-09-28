@@ -1,14 +1,14 @@
-package com.sats.internal.model;
+package com.sats.caching.internal.services;
 
 /**
  * @version 1.0.0
  * @author sats17
  *
  */
-public class Storage {
+class CacheEntries {
 
 	/**
-	 * Cache created timestamp.
+	 * Timestamp set in milliseconds when Storage creates
 	 */
 	private long createdTimeStamp = System.currentTimeMillis();
 
@@ -38,7 +38,7 @@ public class Storage {
 	 * Constructor that stores cache value.
 	 * @param value
 	 */
-	public Storage(Object value) {
+	public CacheEntries(Object value) {
 		this.value = value;
 	}
 
@@ -84,7 +84,7 @@ public class Storage {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Storage other = (Storage) obj;
+		CacheEntries other = (CacheEntries) obj;
 		if (createdTimeStamp != other.createdTimeStamp)
 			return false;
 		if (value == null) {

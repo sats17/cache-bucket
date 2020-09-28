@@ -1,20 +1,19 @@
-package com.sats.internal.service;
+package com.sats.caching.internal.services;
 
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
-import com.sats.internal.model.Cache;
-import com.sats.internal.model.Storage;
 
 /**
  * @version 1.0.0
  * @author sats17
  *
  */
-public class CacheServiceImplementation implements CacheServiceInterface {
+class CacheServiceImplementation implements CacheServiceInterface {
 
 	/**
 	 * Declared cache object.
 	 */
-	private Cache<Object, Object> cache;
+	private Bucket<Object, Object> cache;
 
 	/**
 	 * This method set cache. First it check if cache is full or not, if it is full
@@ -25,7 +24,7 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void setCache(Object key, Object value) {
-		if (cache.getCacheSize() >= cache.getSize()) {
+		if (cache.getTotalEntries() >= cache.getBucketSize()) {
 			cache.removeOldestCache();
 			cache.setCache(key, value);
 		} else {
@@ -41,8 +40,8 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void createCache(int size) {
-		cache = new Cache<Object, Object>();
-		cache.setSize(size);
+		cache = new Bucket<Object, Object>();
+		cache.setBucketSize(size); 
 	}
 
 	/**
@@ -53,8 +52,8 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param timeLimit
 	 */
 	public void createCache(int size, long timeLimit) {
-		cache = new Cache<Object, Object>(timeLimit);
-		cache.setSize(size);
+		cache = new Bucket<Object, Object>(timeLimit);
+		cache.setBucketSize(size);
 	}
 
 	/**
@@ -63,12 +62,22 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param key
 	 * @return cache
 	 */
-	public Object getCacheByKey(Object key) {
+	public Object getCacheByKey(String key) {
 		if (cache.getCache().containsKey(key)) {
-			return cache.getCache().get(key);
+			CacheEntries storage = cache.getCache(key);
+			return storage.getValue();
 		} else {
 			return null;
 		}
+	}
+	
+	/**
+	 * This method returns all object store in cache.
+	 * 
+	 * @return ConcurrentHashMap<Object, Storage>
+	 */
+	public HashMap<String, Object> getAll() {
+		return cache.getCache(); 
 	}
 
 	/**
@@ -76,15 +85,6 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public void clearCache() {
 		cache.clear();
-	}
-
-	/**
-	 * This method returns all object store in cache.
-	 * 
-	 * @return ConcurrentHashMap<Object, Storage>
-	 */
-	public ConcurrentHashMap<Object, Storage> getAll() {
-		return cache.getCache();
 	}
 
 	/**
@@ -104,6 +104,30 @@ public class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public void setCacheWithTimeExpire(Object key, Object value) {
 		// Under development
+	}
+
+	/**
+	 * Method return cache size.
+	 */
+	@Override
+	public int getBucketSize() {
+		return cache.getBucketSize();
+	}
+
+	@Override
+	public long getBucketTimeLimit() {
+		return cache.getTimeLimit();
+	}
+
+	@Override
+	public void setBucketTimeLimit() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getTotalEntries() {
+		return cache.getTotalEntries();
 	}
 
 }
