@@ -1,6 +1,6 @@
 package com.sats.caching.internal.services;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import com.sats.caching.extern.CacheBucket;
 
@@ -75,7 +75,7 @@ public class CacheController implements CacheBucket {
 	 * This method returns all cache from Cache bucket.
 	 * @return HashMap<String, Object> : Returns all keys and cache.
 	 */
-	public HashMap<String, Object> getAll() {
+	public Map<String, Object> getAll() {
 		return cacheService.getAll();
 	}
 	

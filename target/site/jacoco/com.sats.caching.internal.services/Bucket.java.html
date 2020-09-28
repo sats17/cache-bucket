@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Bucket.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServerSide-InMemory-Cache</a> &gt; <a href="index.source.html" class="el_package">com.sats.caching.internal.services</a> &gt; <span class="el_source">Bucket.java</span></div><h1>Bucket.java</h1><pre class="source lang-java linenums">package com.sats.caching.internal.services;
+
+import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
+import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+
+/**
+ * @version 1.0.0
+ * @author sats17
+ *
+ * @param &lt;K&gt;
+ * @param &lt;V&gt;
+ */
+class Bucket&lt;K, V&gt; {
+
+	/**
+	 * Cache time limit variable.
+	 */
+	private long timeLimit;
+
+	/**
+	 * Cache size variable.
+	 */
+	private int size;
+
+	/**
+	 * Cache map.
+	 */
+<span class="fc" id="L36">	private ConcurrentHashMap&lt;K, CacheEntries&gt; cache = new ConcurrentHashMap&lt;&gt;();</span>
+	
+	
+	/**
+	 * Default constructor for cache.
+	 */
+<span class="fc" id="L42">	public Bucket() {</span>
+<span class="fc" id="L43">	}</span>
+
+	/**
+	 * Parameterized constructor for cache. It will initialized scheduler once called.
+	 * @param timeLimit
+	 */
+<span class="fc" id="L49">	public Bucket(long timeLimit) {</span>
+<span class="fc" id="L50">		this.timeLimit = timeLimit;</span>
+<span class="fc" id="L51">		initializeScheduler(timeLimit);</span>
+<span class="fc" id="L52">	}</span>
+
+	/**
+	 * This method initialized the scheduler and checks if cache is empty or not every seconds.
+	 * if cache is not empty then it will call cacheAutoClear method.
+	 * @param timeLimit
+	 * @return void
+	 */
+	private void initializeScheduler(final long timeLimit) {
+<span class="fc" id="L61">		ScheduledExecutorService schedular = Executors.newSingleThreadScheduledExecutor();</span>
+<span class="fc" id="L62">		schedular.scheduleAtFixedRate(new Runnable() {</span>
+			public void run() {
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">				if (!cache.isEmpty()) {</span>
+<span class="nc" id="L65">					cacheAutoClear();</span>
+				}
+<span class="fc" id="L67">			}</span>
+		}, SCHEDULAR_INTIAL_DELAY, SCHEDULAR_PERIOD, TimeUnit.MILLISECONDS);
+<span class="fc" id="L69">	}</span>
+
+	/**
+	 * This method iterate over cache map and compare every storage objects with it's created time stamp and current
+	 * time stamp. If created time stamp  is less than current time stamp then it will clear that cache by it's key.
+	 * @return void
+	 */
+	private void cacheAutoClear() {
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (Map.Entry&lt;K, CacheEntries&gt; entry : cache.entrySet()) {</span>
+<span class="nc" id="L78">			K key = entry.getKey();</span>
+<span class="nc" id="L79">			CacheEntries value = entry.getValue();</span>
+<span class="nc" id="L80">			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeLimit;</span>
+<span class="nc" id="L81">			long currentTimeStamp = System.currentTimeMillis();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">			if (createdTimeStamp &lt; currentTimeStamp) {</span>
+<span class="nc" id="L83">				clear(key);</span>
+			}
+<span class="nc" id="L85">		}</span>
+<span class="nc" id="L86">	}</span>
+
+	/**
+	 * This method returns all cache, it get all cache from concurrentHashMap and
+	 * push in into HashMap.
+	 * @return ConcurrentHashMap&lt;K, Storage&gt;
+	 */
+	public Map&lt;String, Object&gt; getCache() {
+<span class="fc" id="L94">		Map&lt;String, Object&gt; returningObject = new HashMap&lt;&gt;();</span>
+<span class="fc bfc" id="L95" title="All 2 branches covered.">		for (Map.Entry&lt;K, CacheEntries&gt; entry : this.cache.entrySet()) {</span>
+<span class="fc" id="L96">		    String key = entry.getKey().toString();</span>
+<span class="fc" id="L97">		    CacheEntries value = entry.getValue();</span>
+<span class="fc" id="L98">		    returningObject.put(key, value);</span>
+<span class="fc" id="L99">		}</span>
+<span class="fc" id="L100">		return returningObject;</span>
+	}
+	
+	/**
+	 * 
+	 * @param key : Unique which stores in bucket for particular cache.
+	 * @return returns Cache Storage.
+	 */
+	public CacheEntries getCache(String key) {
+<span class="fc" id="L109">		return cache.get(key);</span>
+	}
+
+	/**
+	 * This method return size of cache.
+	 * @return size
+	 */
+	public int getBucketSize() {
+<span class="fc" id="L117">		return this.size;</span>
+	}
+
+	/**
+	 * This method sets cache size.
+	 * @param size
+	 * @return void
+	 */
+	public void setBucketSize(int size) {
+<span class="fc" id="L126">		this.size = size;</span>
+<span class="fc" id="L127">	}</span>
+
+	/**
+	 * This method get cache time limit.
+	 * @return timeLimit
+	 */
+	public long getTimeLimit() {
+<span class="fc" id="L134">		return this.timeLimit;</span>
+	}
+
+	/**
+	 * This method set cache time limit.
+	 * @param timeLimit
+	 * @return void
+	 */
+	public void setTimeLimit(long timeLimit) {
+<span class="nc" id="L143">		this.timeLimit = timeLimit;</span>
+<span class="nc" id="L144">	}</span>
+
+	/**
+	 * This method stores key and value in concurrentHashMap.
+	 * @param key
+	 * @param value
+	 * @return void
+	 */
+	public void setCache(K key, V value) {
+<span class="fc" id="L153">		this.cache.put(key, new CacheEntries(value));</span>
+<span class="fc" id="L154">	}</span>
+
+	/**
+	 * This remove cache by key from concurrentHashMap.
+	 * @param key
+	 * @return void
+	 */
+	public void clear(K key) {
+<span class="nc" id="L162">		this.cache.remove(key);</span>
+<span class="nc" id="L163">	}</span>
+
+	/**
+	 * This method return total number of keys present in cache.
+	 * @return size
+	 */
+	public int getTotalEntries() {
+<span class="fc" id="L170">		return this.cache.size();</span>
+	}
+
+	/**
+	 * This method clear cache.
+	*/
+	public void clear() {
+<span class="nc" id="L177">		this.cache.clear();</span>
+<span class="nc" id="L178">	}</span>
+
+	/**
+	 * This method remove oldest element from cache.
+	 * @return void
+	*/
+	public void removeOldestCache() {
+<span class="nc" id="L185">		long greatestTimestamp = System.currentTimeMillis();</span>
+<span class="nc" id="L186">		K removalKey = null;</span>
+<span class="nc bnc" id="L187" title="All 2 branches missed.">		for (Map.Entry&lt;K, CacheEntries&gt; entry : cache.entrySet()) {</span>
+<span class="nc bnc" id="L188" title="All 2 branches missed.">			if (entry.getValue().getCreatedTimeStamp() &lt;= greatestTimestamp) {</span>
+<span class="nc" id="L189">				greatestTimestamp = entry.getValue().getCreatedTimeStamp();</span>
+			}
+<span class="nc" id="L191">			removalKey = entry.getKey();</span>
+<span class="nc" id="L192">		}</span>
+<span class="nc" id="L193">		this.cache.remove(removalKey);</span>
+<span class="nc" id="L194">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L198">		return &quot;Cache [timeLimit=&quot; + timeLimit + &quot;, cache=&quot; + cache + &quot;]&quot;;</span>
+	}
+
+	@Override
+	public int hashCode() {
+<span class="nc" id="L203">		final int prime = 31;</span>
+<span class="nc" id="L204">		int result = 1;</span>
+<span class="nc bnc" id="L205" title="All 2 branches missed.">		result = prime * result + ((cache == null) ? 0 : cache.hashCode());</span>
+<span class="nc" id="L206">		result = prime * result + (int) (timeLimit ^ (timeLimit &gt;&gt;&gt; 32));</span>
+<span class="nc" id="L207">		return result;</span>
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+<span class="nc bnc" id="L212" title="All 2 branches missed.">		if (this == obj)</span>
+<span class="nc" id="L213">			return true;</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">		if (obj == null)</span>
+<span class="nc" id="L215">			return false;</span>
+<span class="nc bnc" id="L216" title="All 2 branches missed.">		if (getClass() != obj.getClass())</span>
+<span class="nc" id="L217">			return false;</span>
+<span class="nc" id="L218">		Bucket&lt;K, V&gt; other = (Bucket) obj;</span>
+<span class="nc bnc" id="L219" title="All 2 branches missed.">		if (cache == null) {</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">			if (other.cache != null)</span>
+<span class="nc" id="L221">				return false;</span>
+<span class="nc bnc" id="L222" title="All 2 branches missed.">		} else if (!cache.equals(other.cache))</span>
+<span class="nc" id="L223">			return false;</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">		if (timeLimit != other.timeLimit)</span>
+<span class="nc" id="L225">			return false;</span>
+<span class="nc" id="L226">		return true;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

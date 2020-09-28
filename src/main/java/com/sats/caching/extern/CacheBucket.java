@@ -1,6 +1,6 @@
 package com.sats.caching.extern;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @version 1.0.0
@@ -36,7 +36,7 @@ public interface CacheBucket {
 	 * This method returns all cache from Cache bucket.
 	 * @return HashMap<String, Object> : Returns all keys and cache.
 	 */
-	public HashMap<String, Object> getAll();
+	public Map<String, Object> getAll();
 	
 	/**
 	 * This method gives Cache bucket size.

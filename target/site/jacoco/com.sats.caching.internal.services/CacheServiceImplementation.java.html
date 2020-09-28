@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CacheServiceImplementation.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServerSide-InMemory-Cache</a> &gt; <a href="index.source.html" class="el_package">com.sats.caching.internal.services</a> &gt; <span class="el_source">CacheServiceImplementation.java</span></div><h1>CacheServiceImplementation.java</h1><pre class="source lang-java linenums">package com.sats.caching.internal.services;
+
+import java.util.Map;
+
+/**
+ * @version 1.0.0
+ * @author sats17
+ *
+ */
+<span class="fc" id="L10">class CacheServiceImplementation implements CacheServiceInterface {</span>
+
+	/**
+	 * Declared cache object.
+	 */
+	private Bucket&lt;Object, Object&gt; cache;
+
+	/**
+	 * This method set cache. First it check if cache is full or not, if it is full
+	 * then it will remove oldest cache after that it will set new cache.
+	 * 
+	 * @param key
+	 * @param value
+	 * @return void
+	 */
+	public void setCache(Object key, Object value) {
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">		if (cache.getTotalEntries() &gt;= cache.getBucketSize()) {</span>
+<span class="nc" id="L27">			cache.removeOldestCache();</span>
+<span class="nc" id="L28">			cache.setCache(key, value);</span>
+		} else {
+<span class="fc" id="L30">			cache.setCache(key, value);</span>
+		}
+<span class="fc" id="L32">	}</span>
+
+	/**
+	 * This is cache initialization method, it will create space for cache and
+	 * initialize it.
+	 * 
+	 * @param size
+	 * @return void
+	 */
+	public void createCache(int size) {
+<span class="fc" id="L42">		cache = new Bucket&lt;Object, Object&gt;();</span>
+<span class="fc" id="L43">		cache.setBucketSize(size); </span>
+<span class="fc" id="L44">	}</span>
+
+	/**
+	 * This method is cache initialization method, it will create space for cache.
+	 * cache object inside this method will expire after given time limit.
+	 * 
+	 * @param size
+	 * @param timeLimit
+	 */
+	public void createCache(int size, long timeLimit) {
+<span class="fc" id="L54">		cache = new Bucket&lt;Object, Object&gt;(timeLimit);</span>
+<span class="fc" id="L55">		cache.setBucketSize(size);</span>
+<span class="fc" id="L56">	}</span>
+
+	/**
+	 * This method return cache for given key.
+	 * 
+	 * @param key
+	 * @return cache
+	 */
+	public Object getCacheByKey(String key) {
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">		if (cache.getCache().containsKey(key)) {</span>
+<span class="fc" id="L66">			CacheEntries storage = cache.getCache(key);</span>
+<span class="fc" id="L67">			return storage.getValue();</span>
+		} else {
+<span class="nc" id="L69">			return null;</span>
+		}
+	}
+	
+	/**
+	 * This method returns all object store in cache.
+	 * 
+	 * @return ConcurrentHashMap&lt;Object, Storage&gt;
+	 */
+	public Map&lt;String, Object&gt; getAll() {
+<span class="nc" id="L79">		return cache.getCache(); </span>
+	}
+
+	/**
+	 * This method clear all cache.
+	 */
+	public void clearCache() {
+<span class="nc" id="L86">		cache.clear();</span>
+<span class="nc" id="L87">	}</span>
+
+	/**
+	 * This method clear cache for given key.
+	 * 
+	 * @param key
+	 */
+	public void clearCache(Object key) {
+<span class="nc" id="L95">		cache.clear(key);</span>
+<span class="nc" id="L96">	}</span>
+
+	/**
+	 * Currently in development
+	 * 
+	 * @param key
+	 * @param value
+	 */
+	public void setCacheWithTimeExpire(Object key, Object value) {
+		// Under development
+<span class="nc" id="L106">	}</span>
+
+	/**
+	 * Method return cache size.
+	 */
+	@Override
+	public int getBucketSize() {
+<span class="fc" id="L113">		return cache.getBucketSize();</span>
+	}
+
+	@Override
+	public long getBucketTimeLimit() {
+<span class="fc" id="L118">		return cache.getTimeLimit();</span>
+	}
+
+	@Override
+	public void setBucketTimeLimit() {
+		// TODO Auto-generated method stub
+		
+<span class="nc" id="L125">	}</span>
+
+	@Override
+	public int getTotalEntries() {
+<span class="nc" id="L129">		return cache.getTotalEntries();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
