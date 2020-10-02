@@ -58,16 +58,16 @@ public interface CacheBucket {
 	public void clear();
 	
 	/**
-	 * This method returns the cache expire time limit for Cache Bucket.
+	 * This method returns the cache time to live for Cache Bucket.
 	 * @return long : Return time in milliseconds.
 	 */
-	public long getBucketTimeLimit();
+	public long getBucketTTL();
 	
 	/**
 	 * To be implemented
 	 * @return void: Method returns nothing.
 	 */
-	public void setBucketTimeLimit();
+	public void setBucketTTL();
 	
 	/**
 	 * This method gives total number of cache entries present in Cache Bucket.

@@ -50,8 +50,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param size
 	 * @param timeLimit
 	 */
-	public void createCache(int size, long timeLimit) {
-		cache = new Bucket<Object, Object>(timeLimit);
+	public void createCache(int size, long timeToLive) {
+		cache = new Bucket<Object, Object>(timeToLive);
 		cache.setBucketSize(size);
 	}
 
@@ -114,12 +114,12 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	@Override
-	public long getBucketTimeLimit() {
-		return cache.getTimeLimit();
+	public long getBucketTTL() {
+		return cache.getTimeToLive();
 	}
 
 	@Override
-	public void setBucketTimeLimit() {
+	public void setBucketTTL() {
 		// TODO Auto-generated method stub
 		
 	}

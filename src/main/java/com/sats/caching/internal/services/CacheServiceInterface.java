@@ -71,7 +71,7 @@ interface CacheServiceInterface {
 	 * 
 	 * @return Cache expiration time, which was set at cache bucket creation time. 
 	 */
-	long getBucketTimeLimit();
+	long getBucketTTL();
 	
-	void setBucketTimeLimit();
+	void setBucketTTL();
 }

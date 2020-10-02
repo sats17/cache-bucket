@@ -110,8 +110,8 @@ public class CacheController implements CacheBucket {
 	 * @return long : Return time in milliseconds.
 	 */
 	@Override
-	public long getBucketTimeLimit() {
-		return cacheService.getBucketTimeLimit();
+	public long getBucketTTL() {
+		return cacheService.getBucketTTL();
 	}
 
 	/**
@@ -119,7 +119,7 @@ public class CacheController implements CacheBucket {
 	 * @return void: Method returns nothing.
 	 */
 	@Override
-	public void setBucketTimeLimit() {
+	public void setBucketTTL() {
 		
 	}
 
