@@ -36,7 +36,7 @@ public class CacheBucketTest {
 	@Test
 	public void testCacheControllerWithTimeLimit() {
 		cache = new CacheController(size, bucketTimeLimit);
-		long actualTimeLimit = cache.getBucketTimeLimit();
+		long actualTimeLimit = cache.getBucketTTL();
 		assertEquals(bucketTimeLimit, actualTimeLimit);
 	}
 }

@@ -23,7 +23,7 @@ class Bucket<K, V> {
 	/**
 	 * Cache time limit variable.
 	 */
-	private long timeLimit;
+	private long timeToLive;
 
 	/**
 	 * Cache size variable.
@@ -46,9 +46,9 @@ class Bucket<K, V> {
 	 * Parameterized constructor for cache. It will initialized scheduler once called.
 	 * @param timeLimit
 	 */
-	public Bucket(long timeLimit) {
-		this.timeLimit = timeLimit;
-		initializeScheduler(timeLimit);
+	public Bucket(long timeToLive) {
+		this.timeToLive = timeToLive;
+		initializeScheduler();
 	}
 
 	/**
@@ -57,7 +57,7 @@ class Bucket<K, V> {
 	 * @param timeLimit
 	 * @return void
 	 */
-	private void initializeScheduler(final long timeLimit) {
+	private void initializeScheduler() {
 		ScheduledExecutorService schedular = Executors.newSingleThreadScheduledExecutor();
 		schedular.scheduleAtFixedRate(new Runnable() {
 			public void run() {
@@ -77,7 +77,7 @@ class Bucket<K, V> {
 		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
 			K key = entry.getKey();
 			CacheEntries value = entry.getValue();
-			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeLimit;
+			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeToLive;
 			long currentTimeStamp = System.currentTimeMillis();
 			if (createdTimeStamp < currentTimeStamp) {
 				clear(key);
@@ -128,19 +128,19 @@ class Bucket<K, V> {
 
 	/**
 	 * This method get cache time limit.
-	 * @return timeLimit
+	 * @return timeToLive
 	 */
-	public long getTimeLimit() {
-		return this.timeLimit;
+	public long getTimeToLive() {
+		return this.timeToLive;
 	}
 
 	/**
 	 * This method set cache time limit.
-	 * @param timeLimit
+	 * @param timeToLive
 	 * @return void
 	 */
-	public void setTimeLimit(long timeLimit) {
-		this.timeLimit = timeLimit;
+	public void setTimeToLive(long timeToLive) {
+		this.timeToLive = timeToLive;
 	}
 
 	/**
@@ -195,7 +195,7 @@ class Bucket<K, V> {
 
 	@Override
 	public String toString() {
-		return "Cache [timeLimit=" + timeLimit + ", cache=" + cache + "]";
+		return "Cache [timeToLive=" + timeToLive + ", cache=" + cache + "]";
 	}
 
 	@Override
@@ -203,7 +203,7 @@ class Bucket<K, V> {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((cache == null) ? 0 : cache.hashCode());
-		result = prime * result + (int) (timeLimit ^ (timeLimit >>> 32));
+		result = prime * result + (int) (timeToLive ^ (timeToLive >>> 32));
 		return result;
 	}
 
@@ -221,7 +221,7 @@ class Bucket<K, V> {
 				return false;
 		} else if (!cache.equals(other.cache))
 			return false;
-		if (timeLimit != other.timeLimit)
+		if (timeToLive != other.timeToLive)
 			return false;
 		return true;
 	}
