@@ -86,18 +86,11 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method returns all cache, it get all cache from concurrentHashMap and
-	 * push in into HashMap.
-	 * @return ConcurrentHashMap<K, Storage>
+	 * This method returns cache bucket.
+	 * @return ConcurrentHashMap<K, CacheEntries>
 	 */
-	public Map<String, Object> getCache() {
-		Map<String, Object> returningObject = new HashMap<>();
-		for (Map.Entry<K, CacheEntries> entry : this.cache.entrySet()) {
-		    String key = entry.getKey().toString();
-		    CacheEntries value = entry.getValue();
-		    returningObject.put(key, value);
-		}
-		return returningObject;
+	public ConcurrentHashMap<K, CacheEntries> getCache() {
+		return cache;
 	}
 	
 	/**

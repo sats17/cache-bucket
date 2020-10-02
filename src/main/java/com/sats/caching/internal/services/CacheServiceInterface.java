@@ -10,17 +10,17 @@ import java.util.Map;
 interface CacheServiceInterface {
 
 	/**
-	 * Creates cache object with given size.
+	 * Creates cache bucket object with given size.
 	 * @param size : This size defines that this total number of cache can be store.
 	 */
-	void createCache(int size);
+	void createBucket(int size);
 
 	/**
-	 * Creates cache object with given size and time limit.
+	 * Creates cache bucket object with given size and time limit.
 	 * @param size : This size defines that this total number of cache can be store.
 	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
 	 */
-	void createCache(int size, long timeLimit);
+	void createBucket(int size, long timeLimit);
 
 	/**
 	 * @param key
