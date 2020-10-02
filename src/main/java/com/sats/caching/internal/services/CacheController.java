@@ -19,7 +19,7 @@ public class CacheController implements CacheBucket {
 	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
 	 */
 	public CacheController(int size,long timeLimit){
-		cacheService.createCache(size,timeLimit);
+		cacheService.createBucket(size,timeLimit);
 	}
 	
 	/**
@@ -27,7 +27,7 @@ public class CacheController implements CacheBucket {
 	 * @param size : Total Number of cache entries can be store into Cache Bucket.
 	 */
 	public CacheController(int size) {
-		cacheService.createCache(size);
+		cacheService.createBucket(size);
 	}
 
 	/**

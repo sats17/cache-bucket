@@ -1,6 +1,8 @@
 package com.sats.caching.internal.services;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @version 1.0.0
@@ -38,7 +40,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param size
 	 * @return void
 	 */
-	public void createCache(int size) {
+	public void createBucket(int size) {
 		cache = new Bucket<Object, Object>();
 		cache.setBucketSize(size); 
 	}
@@ -50,7 +52,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param size
 	 * @param timeLimit
 	 */
-	public void createCache(int size, long timeToLive) {
+	public void createBucket(int size, long timeToLive) {
 		cache = new Bucket<Object, Object>(timeToLive);
 		cache.setBucketSize(size);
 	}
@@ -73,10 +75,16 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	/**
 	 * This method returns all object store in cache.
 	 * 
-	 * @return ConcurrentHashMap<Object, Storage>
+	 * @return Map<String, Object>
 	 */
 	public Map<String, Object> getAll() {
-		return cache.getCache(); 
+		Map<String, Object> returningObject = new HashMap<>();
+		for (Entry<Object, CacheEntries> entry : cache.getCache().entrySet()) {
+		    String key = entry.getKey().toString();
+		    CacheEntries value = entry.getValue();
+		    returningObject.put(key, value);
+		}
+		return returningObject;
 	}
 
 	/**

@@ -2,6 +2,8 @@ package com.sats.caching.extern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -37,6 +39,7 @@ public class CacheBucketTest {
 	public void testCacheControllerWithTimeLimit() {
 		cache = new CacheController(size, bucketTimeLimit);
 		long actualTimeLimit = cache.getBucketTTL();
+		Map<String, Object> cahce = cache.getAll();
 		assertEquals(bucketTimeLimit, actualTimeLimit);
 	}
 }
