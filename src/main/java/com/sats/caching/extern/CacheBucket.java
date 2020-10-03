@@ -42,7 +42,7 @@ public interface CacheBucket {
 	 * This method gives Cache bucket size.
 	 * @return integer : Bucket size.
 	 */
-	public int getBucketSize();
+	public int getBucketCapacity();
 	
 	/**
 	 * This method clears the cache for given key if it is presents in Cache bucket. 

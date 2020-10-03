@@ -17,6 +17,30 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	private Bucket<Object, Object> cache;
 
 	/**
+	 * This is cache initialization method, it will create space for cache and
+	 * initialize it.
+	 * 
+	 * @param bucketCapacity
+	 * @return void
+	 */
+	public void createBucket(int bucketCapacity) {
+		cache = new Bucket<>();
+		cache.setBucketCapacity(bucketCapacity); 
+	}
+
+	/**
+	 * This method is cache initialization method, it will create space for cache.
+	 * cache object inside this method will expire after given time limit.
+	 * 
+	 * @param bucketCapacity
+	 * @param timeLimit
+	 */
+	public void createBucket(int bucketCapacity, long timeToLive) {
+		cache = new Bucket<>(timeToLive);
+		cache.setBucketCapacity(bucketCapacity);
+	}
+	
+	/**
 	 * This method set cache. First it check if cache is full or not, if it is full
 	 * then it will remove oldest cache after that it will set new cache.
 	 * 
@@ -25,36 +49,12 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void setCache(Object key, Object value) {
-		if (cache.getTotalEntries() >= cache.getBucketSize()) {
+		if (cache.getTotalEntries() >= cache.getBucketCapacity()) {
 			cache.removeOldestCache();
 			cache.setCache(key, value);
 		} else {
 			cache.setCache(key, value);
 		}
-	}
-
-	/**
-	 * This is cache initialization method, it will create space for cache and
-	 * initialize it.
-	 * 
-	 * @param size
-	 * @return void
-	 */
-	public void createBucket(int size) {
-		cache = new Bucket<Object, Object>();
-		cache.setBucketSize(size); 
-	}
-
-	/**
-	 * This method is cache initialization method, it will create space for cache.
-	 * cache object inside this method will expire after given time limit.
-	 * 
-	 * @param size
-	 * @param timeLimit
-	 */
-	public void createBucket(int size, long timeToLive) {
-		cache = new Bucket<Object, Object>(timeToLive);
-		cache.setBucketSize(size);
 	}
 
 	/**
@@ -117,8 +117,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * Method return cache size.
 	 */
 	@Override
-	public int getBucketSize() {
-		return cache.getBucketSize();
+	public int getBucketCapacity() {
+		return cache.getBucketCapacity();
 	}
 
 	@Override
