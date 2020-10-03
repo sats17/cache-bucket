@@ -1,8 +1,10 @@
 package com.sats.caching.internal.services;
 
 /**
+ * Contains constants of library.
+ * 
  * @version 1.0.0
- * @author sats17
+ * @author Sats17
  *
  */
 class Constants {

@@ -1,5 +1,12 @@
 package com.sats.caching.internal.services;
 
+/**
+ * Validation class contains all common validation methods.
+ * 
+ * @version 1.0.0
+ * @author Sats17
+ *
+ */
 public class CommonValidation {
 
 	private CommonValidation() {

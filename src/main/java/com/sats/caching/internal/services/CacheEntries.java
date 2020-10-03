@@ -1,14 +1,16 @@
 package com.sats.caching.internal.services;
 
 /**
+ * CacheEntries pojo class, contains Cache value and it's metadata.
+ * 
  * @version 1.0.0
- * @author sats17
+ * @author Sats17
  *
  */
 class CacheEntries {
 
 	/**
-	 * Timestamp set in milliseconds when Storage creates
+	 * Timestamp sets in milliseconds when Cache Object creates
 	 */
 	private long createdTimeStamp = System.currentTimeMillis();
 
@@ -19,23 +21,16 @@ class CacheEntries {
 
 	/**
 	 * This method returns cache created time
+	 * 
 	 * @return createdTimeStamp
 	 */
 	public long getCreatedTimeStamp() {
 		return createdTimeStamp;
 	}
-
-	/**
-	 * This method cache created timestamp.
-	 * @param createdTimeStamp
-	 * @return void
-	 */
-	public void setCreatedTimeStamp(long createdTimeStamp) {
-		this.createdTimeStamp = createdTimeStamp;
-	}
-
+	
 	/**
 	 * Constructor that stores cache value.
+	 * 
 	 * @param value
 	 */
 	public CacheEntries(Object value) {
@@ -44,6 +39,7 @@ class CacheEntries {
 
 	/**
 	 * This method return cache value
+	 * 
 	 * @return value
 	 */
 	public Object getValue() {
@@ -52,6 +48,7 @@ class CacheEntries {
 
 	/**
 	 * This method set cache value.
+	 * 
 	 * @param value
 	 */
 	public void setValue(Object value) {

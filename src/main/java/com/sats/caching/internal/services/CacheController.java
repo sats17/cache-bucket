@@ -6,20 +6,24 @@ import com.sats.caching.extern.CacheBucket;
 import static com.sats.caching.internal.services.CommonValidation.*;
 
 /**
+ * Implementation of cache bucket
  * 
  * @version 1.0.0
- * @author sats17
+ * @author Sats17
  * 
  */
 public class CacheController implements CacheBucket {
 
 	/**
-	 * This constructor creates the Cache Bucket with size and time limit.
+	 * Constructor creates the cache bucket with given capacity and TTL.
 	 * 
 	 * @param capacity   : Total Number of cache entries can be store into Cache
-	 *                   Bucket.
-	 * @param timeToLive : TTL in milliseconds, each cache present in bucket will
-	 *                   expire automatically after given TTL.
+	 *                   Bucket, capacity should be between 1 to 200.
+	 * @param timeToLive : Time to live in milliseconds, each of the cache present
+	 *                   in bucket will expire automatically after given TTL.
+	 *                   timeToLive should be between 1 to 14400000.
+	 * @throws IllegalArgumentException when capacity and timeToLive does not meet
+	 *                                  it's conditions.
 	 */
 	public CacheController(int capacity, long timeToLive) {
 		validateCapacity(capacity);
@@ -28,10 +32,11 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * This constructor creates the cache bucket with size.
+	 * Constructor creates the cache bucket with given capacity.
 	 * 
 	 * @param capacity : Total Number of cache entries can be store into Cache
-	 *                 Bucket.
+	 *                 Bucket, capacity should be between 1 to 200.
+	 * @throws IllegalArgumentException when capacity does not meet it's conditions.
 	 */
 	public CacheController(int capacity) {
 		validateCapacity(capacity);
@@ -39,16 +44,19 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * Object creation of cacheService class.
+	 * Object of CacheServiceImplementation.
 	 */
 	private CacheServiceInterface cacheService = new CacheServiceImplementation();
 
 	/**
-	 * This method set cache into Cache Bucket.
+	 * This method stores cache into Cache Bucket.
 	 * 
-	 * @param key   : Unique cache key { Type: String}.
-	 * @param value : Cache value that you want store into bucket.
+	 * @param key   : Unique key for cache, key should not be null, blank and it's
+	 *              size should be less than equal to 10.
+	 * @param value : Cache value that can be any object, but should not be null.
 	 * @return void : This method returns nothing.
+	 * @throws IllegalArgumentException If key and value does not meets with given
+	 *                                  conditions
 	 */
 	public void setCache(String key, Object value) {
 		validateKey(key);
@@ -64,6 +72,7 @@ public class CacheController implements CacheBucket {
 	 * @param value
 	 * @param timeExpire
 	 */
+	@Deprecated
 	public void setCache(String key, Object value, Boolean timeExpire) {
 		if (timeExpire) {
 			cacheService.setCacheWithTimeExpire(key, value);
@@ -74,10 +83,12 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * This method returns Cache from Cache bucket for given key.
+	 * This method returns cache object from cache bucket for matching key.
 	 * 
-	 * @param key : Unique key that present in cache bucket.
-	 * @return Object : Cache Object. You need cast it with your cache type.
+	 * @param key : Unique cache key that present in cache bucket. Key should not be null, blank and it's
+	 *              size should be less than equal to 10.
+	 * @return Object : Cache Object.
+	 * @throws IllegalArgumentException  If key does not meet given conditions
 	 */
 	public Object getCache(String key) {
 		validateKey(key);
@@ -87,22 +98,28 @@ public class CacheController implements CacheBucket {
 	/**
 	 * This method returns all cache from Cache bucket.
 	 * 
-	 * @return HashMap<String, Object> : Returns all keys and cache.
+	 * @return Map<String, Object> : Map contains cache key and value.
 	 */
 	public Map<String, Object> getAll() {
 		return cacheService.getAll();
 	}
 
 	/**
-	 * This method gives Cache bucket size.
+	 * This method returns bucket capacity.
 	 * 
-	 * @return integer : Bucket size.
+	 * @return int : bucket capacity.
 	 */
 	@Override
 	public int getBucketCapacity() {
 		return cacheService.getBucketCapacity();
 	}
 
+	/**
+	 * This method resize the bucket capacity.
+	 * 
+	 * @param capacity : New capacity value, it should be between 1 to 200.
+	 * @throws IllegalArgumentException if capacity does not meets required conditions.
+	 */
 	@Override
 	public void setBucketCapacity(int capacity) {
 		validateCapacity(capacity);
@@ -110,28 +127,27 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * This method clears the cache for given key if it is presents in Cache bucket.
+	 * This method clears the cache for the given key, if it is presents in bucket.
 	 * 
-	 * @param key : Unique cache key.
-	 * @return void : Method returns nothing.
+	 * @param key : Unique cache key, key should not be null, blank and it's
+	 *              size should be less than equal to 10.
+	 * @throws IllegalArgumentException if key does not meets required conditions.
 	 */
 	public void clear(String key) {
 		cacheService.clearCache(key);
 	}
 
 	/**
-	 * This method Clear all cache from cache bucket.
-	 * 
-	 * @return void : Method returns nothing.
+	 * This method Clear all cache from bucket.
 	 */
 	public void clear() {
 		cacheService.clearCache();
 	}
 
 	/**
-	 * This method returns the cache expire time limit for Cache Bucket.
+	 * This method returns the cache time to live of the Bucket.
 	 * 
-	 * @return long : Return time in milliseconds.
+	 * @return long : Return TTL time in milliseconds.
 	 */
 	@Override
 	public long getBucketTTL() {
@@ -139,10 +155,10 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * Method Update the bucket TTL.
+	 * Sets bucket time to live
 	 * 
-	 * @param timeToLive: bucket TTL value.
-	 * @return void: Method returns nothing.
+	 * @param timeToLive : Cache TTL should be in milliseconds, value should be between 1 to 14400000.
+	 * @throws IllegalArgumentException if timeToLive does not meets required condition. 
 	 */
 	@Override
 	public void setBucketTTL(long timeToLive) {
@@ -151,9 +167,9 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * This method gives total number of cache entries present in Cache Bucket.
+	 * This method returns total number of cache entries present in Bucket.
 	 * 
-	 * @return integer : Returns count of total cache.
+	 * @return int : total count in integer for bucket.
 	 */
 	@Override
 	public int getTotalEntries() {
