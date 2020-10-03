@@ -3,6 +3,8 @@ package com.sats.caching.extern;
 import java.util.Map;
 
 /**
+ * Interface for cache bucket.
+ * 
  * @version 1.0.0
  * @author Sats17
  *
@@ -10,13 +12,13 @@ import java.util.Map;
 public interface CacheBucket {
 
 	/**
-	 * This method set cache into Cache Bucket.
+	 * This method stores cache into Cache Bucket.
 	 * 
 	 * @param key   : Unique key for cache, key should not be null, blank and it's
 	 *              size should be less than equal to 10.
 	 * @param value : Cache value that can be any object, but should not be null.
 	 * @return void : This method returns nothing.
-	 * @throws IllegalArgumentException : If key and value does not meets with given
+	 * @throws IllegalArgumentException If key and value does not meets with given
 	 *                                  conditions
 	 */
 	public void setCache(String key, Object value);
@@ -28,72 +30,74 @@ public interface CacheBucket {
 	 * @param value
 	 * @param canCacheExpire
 	 */
+	@Deprecated
 	public void setCache(String key, Object value, Boolean canCacheExpire);
 
 	/**
-	 * This method returns Cache from Cache bucket for given key.
+	 * This method returns cache object from cache bucket for matching key.
 	 * 
-	 * @param key : Unique key that present in cache bucket.
-	 * @return Object : Cache Object. You need cast it with your cache type.
-	 * @throws IllegalArgumentException : If
+	 * @param key : Unique cache key that present in cache bucket. Key should not be null, blank and it's
+	 *              size should be less than equal to 10.
+	 * @return Object : Cache Object.
+	 * @throws IllegalArgumentException  If key does not meet given conditions
 	 */
 	public Object getCache(String key);
 
 	/**
 	 * This method returns all cache from Cache bucket.
 	 * 
-	 * @return HashMap<String, Object> : Returns all keys and cache.
+	 * @return Map<String, Object> : Map contains cache key and value.
 	 */
 	public Map<String, Object> getAll();
 
 	/**
-	 * This method gives Cache bucket size.
+	 * This method returns bucket capacity.
 	 * 
-	 * @return integer : Bucket size.
+	 * @return int : bucket capacity.
 	 */
 	public int getBucketCapacity();
 
 	/**
-	 * This method update bucket capacity with new value.
+	 * This method resize the bucket capacity.
 	 * 
-	 * @param capacity : New capacity value.
+	 * @param capacity : New capacity value, it should be between 1 to 200.
+	 * @throws IllegalArgumentException if capacity does not meets required conditions.
 	 */
 	public void setBucketCapacity(int capacity);
 
 	/**
-	 * This method clears the cache for given key if it is presents in Cache bucket.
+	 * This method clears the cache for the given key, if it is presents in bucket.
 	 * 
-	 * @param key : Unique cache key.
-	 * @return void : Method returns nothing.
+	 * @param key : Unique cache key, key should not be null, blank and it's
+	 *              size should be less than equal to 10.
+	 * @throws IllegalArgumentException if key does not meets required conditions.
 	 */
 	public void clear(String key);
 
 	/**
-	 * This method Clear all cache from cache bucket.
-	 * 
-	 * @return void : Method returns nothing.
+	 * This method Clear all cache from bucket.
 	 */
 	public void clear();
 
 	/**
-	 * This method returns the cache time to live for Cache Bucket.
+	 * This method returns the cache time to live of the Bucket.
 	 * 
-	 * @return long : Return time in milliseconds.
+	 * @return long : Return TTL time in milliseconds.
 	 */
 	public long getBucketTTL();
 
 	/**
 	 * Sets bucket time to live
 	 * 
-	 * @param timeToLive : Cache TTL in miliseconds
-	 * @return void: Method returns nothing.
+	 * @param timeToLive : Cache TTL should be in milliseconds, value should be between 1 to 14400000.
+	 * @throws IllegalArgumentException if timeToLive does not meets required condition. 
 	 */
 	public void setBucketTTL(long timeToLive);
 
 	/**
-	 * This method gives total number of cache entries present in Cache Bucket.
+	 * This method returns total number of cache entries present in Bucket.
 	 * 
-	 * @return integer : Returns count of total cache.
+	 * @return int : total count in integer for bucket.
 	 */
 	public int getTotalEntries();
 

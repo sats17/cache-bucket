@@ -5,23 +5,23 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 /**
+ * Implementation of CacheServiceInterface.
+ * 
  * @version 1.0.0
- * @author sats17
+ * @author Sats17
  *
  */
 class CacheServiceImplementation implements CacheServiceInterface {
 
 	/**
-	 * Declared cache object.
+	 * Bucket object.
 	 */
 	private Bucket<Object, Object> bucket;
 
 	/**
-	 * This is cache initialization method, it will create space for cache and
-	 * initialize it.
+	 * This is bucket creation method, it will create bucket having spaces for cache that we can store.
 	 * 
-	 * @param bucketCapacity
-	 * @return void
+	 * @param bucketCapacity : capacity of bucket.
 	 */
 	public void createBucket(int bucketCapacity) {
 		bucket = new Bucket<>();
@@ -29,11 +29,10 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * This method is cache initialization method, it will create space for cache.
-	 * cache object inside this method will expire after given time limit.
+	 * This is bucket creation method, it will create bucket having spaces for cache that we can store.
 	 * 
-	 * @param bucketCapacity
-	 * @param timeLimit
+	 * @param bucketCapacity : capacity of bucket.
+	 * @param timeToLive : time to live each cache presents in bucket.
 	 */
 	public void createBucket(int bucketCapacity, long timeToLive) {
 		bucket = new Bucket<>(timeToLive);
@@ -41,12 +40,10 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 	
 	/**
-	 * This method set cache. First it check if cache is full or not, if it is full
-	 * then it will remove oldest cache after that it will set new cache.
+	 * Method add cache into bucket. If bucket is full then method will remove old cache and add new one.
 	 * 
-	 * @param key
-	 * @param value
-	 * @return void
+	 * @param key : Unique key for cache.
+	 * @param value : Cache object.
 	 */
 	public void setCache(Object key, Object value) {
 		if (bucket.getTotalEntries() >= bucket.getBucketCapacity()) {
@@ -58,10 +55,10 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * This method return cache for given key.
+	 * This method return cache value for matching key. If none of key match then it will return null.
 	 * 
-	 * @param key
-	 * @return cache
+	 * @param key : Cache key.
+	 * @return Object : Cache value
 	 */
 	public Object getCacheByKey(String key) {
 		if (bucket.getCache().containsKey(key)) {
@@ -73,9 +70,10 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 	
 	/**
-	 * This method returns all object store in cache.
+	 * This method returns all cache from bucket, for security purpose method fetches cache values and keys
+	 * from object and stores into in HashMap. 
 	 * 
-	 * @return Map<String, Object>
+	 * @return Map<String, Object> : Contains all data about cache.
 	 */
 	public Map<String, Object> getAll() {
 		Map<String, Object> returningObject = new HashMap<>();
@@ -88,16 +86,16 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * This method clear all cache.
+	 * This method clears the all cache.
 	 */
 	public void clearCache() {
 		bucket.clear();
 	}
 
 	/**
-	 * This method clear cache for given key.
+	 * This method clears the cache for given key.
 	 * 
-	 * @param key
+	 * @param key : Cache key
 	 */
 	public void clearCache(Object key) {
 		bucket.clear(key);
@@ -109,12 +107,13 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param key
 	 * @param value
 	 */
+	@Deprecated
 	public void setCacheWithTimeExpire(Object key, Object value) {
 		// Under development
 	}
 
 	/**
-	 * Method return cache size.
+	 * Method return bucket capacity.
 	 */
 	@Override
 	public int getBucketCapacity() {
@@ -124,6 +123,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	/**
 	 * Method sets new bucket capacity. If we want to shrink bucket capacity, then dynamically method will
 	 * remove oldest cache from bucket.
+	 * 
 	 * @param bucketCapacity : New bucket capacity.
 	 */
 	@Override
@@ -140,8 +140,9 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * Method returns bucket TTL.
-	 * @return timeToLive
+	 * Method returns bucket TTL value.
+	 * 
+	 * @return timeToLive : time to live value of bucket.
 	 */
 	@Override
 	public long getBucketTTL() {
@@ -149,7 +150,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * Method set bucket TTL.
+	 * Method set bucket TTL value.
+	 * 
 	 * @param timeToLive : bucket TTL.
 	 */
 	@Override
@@ -158,8 +160,9 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	}
 
 	/**
-	 * Method return total entries present in bucket.
-	 * @return total entries present in bucket.
+	 * Method return total cache entries present in bucket.
+	 * 
+	 * @return int : total entries present in bucket.
 	 */
 	@Override
 	public int getTotalEntries() {

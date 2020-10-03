@@ -10,10 +10,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-
 /**
+ * Bucket class contains all keys and cache.
+ * 
  * @version 1.0.0
- * @author sats17
+ * @author Sats17
  *
  * @param <K>
  * @param <V>
@@ -21,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 class Bucket<K, V> {
 
 	/**
-	 * Cache time limit variable.
+	 * Bucket TTL variable.
 	 */
 	private long timeToLive;
 
@@ -31,20 +32,21 @@ class Bucket<K, V> {
 	private int bucketCapacity;
 
 	/**
-	 * Cache map.
+	 * Map contains key and cacheEntry.
 	 */
 	private ConcurrentMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
-	
-	
+
 	/**
-	 * Default constructor for cache.
+	 * Default constructor for bucket.
 	 */
 	public Bucket() {
 	}
 
 	/**
-	 * Parameterized constructor for cache. It will initialized scheduler once called.
-	 * @param timeLimit
+	 * Parameterized constructor for cache. It will initialized scheduler for auto
+	 * cache clearing.
+	 * 
+	 * @param timeToLive : TTL value.
 	 */
 	public Bucket(long timeToLive) {
 		this.timeToLive = timeToLive;
@@ -52,10 +54,8 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method initialized the scheduler and checks if cache is empty or not every seconds.
-	 * if cache is not empty then it will call cacheAutoClear method.
-	 * @param timeLimit
-	 * @return void
+	 * This method initialized the scheduler and checks if cache is empty or not for
+	 * every seconds. if cache is not empty then it will call cacheAutoClear method.
 	 */
 	private void initializeScheduler() {
 		ScheduledExecutorService schedular = Executors.newSingleThreadScheduledExecutor();
@@ -69,9 +69,8 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method iterate over cache map and compare every storage objects with it's created time stamp and current
-	 * time stamp. If created time stamp  is less than current time stamp then it will clear that cache by it's key.
-	 * @return void
+	 * This method iterate over cache map and if current timestamp is greater than cache createdtimestamp
+	 * plus TTL then that cache will be clear.
 	 */
 	private void cacheAutoClear() {
 		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
@@ -87,16 +86,18 @@ class Bucket<K, V> {
 
 	/**
 	 * This method returns cache bucket.
+	 * 
 	 * @return ConcurrentHashMap<K, CacheEntries>
 	 */
 	public ConcurrentMap<K, CacheEntries> getCache() {
 		return cache;
 	}
-	
+
 	/**
+	 * This method returns CacheEntries object for matching key.
 	 * 
 	 * @param key : Unique which stores in bucket for particular cache.
-	 * @return returns Cache Storage.
+	 * @return CacheEntries
 	 */
 	public CacheEntries getCache(String key) {
 		return cache.get(key);
@@ -104,6 +105,7 @@ class Bucket<K, V> {
 
 	/**
 	 * This method return size of cache.
+	 * 
 	 * @return size
 	 */
 	public int getBucketCapacity() {
@@ -111,7 +113,8 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method sets cache size.
+	 * This method sets bucket capacity.
+	 * 
 	 * @param size
 	 * @return void
 	 */
@@ -120,7 +123,8 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method get cache time limit.
+	 * This method get bucket TTL.
+	 * 
 	 * @return timeToLive
 	 */
 	public long getTimeToLive() {
@@ -128,7 +132,8 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method set cache time limit.
+	 * This method set bucket TTL.
+	 * 
 	 * @param timeToLive
 	 * @return void
 	 */
@@ -138,6 +143,7 @@ class Bucket<K, V> {
 
 	/**
 	 * This method stores key and value in concurrentHashMap.
+	 * 
 	 * @param key
 	 * @param value
 	 * @return void
@@ -148,6 +154,7 @@ class Bucket<K, V> {
 
 	/**
 	 * This remove cache by key from concurrentHashMap.
+	 * 
 	 * @param key
 	 * @return void
 	 */
@@ -157,6 +164,7 @@ class Bucket<K, V> {
 
 	/**
 	 * This method return total number of keys present in cache.
+	 * 
 	 * @return size
 	 */
 	public int getTotalEntries() {
@@ -165,15 +173,17 @@ class Bucket<K, V> {
 
 	/**
 	 * This method clear cache.
-	*/
+	 */
 	public void clear() {
 		this.cache.clear();
 	}
 
 	/**
-	 * This method remove oldest element from cache.
-	 * @return void
-	*/
+	 * This method remove oldest value from bucket, this method declare current time and iterate over 
+	 * map, if any cache object created time stamp is less than current greatest time stamp then it will
+	 * replace current greatest time stamp to created time stamp of cache object and assign removalKey with 
+	 * that key. Later on which key has removalKey assign it will be cleared.
+	 */
 	public void removeOldestCache() {
 		long greatestTimestamp = System.currentTimeMillis();
 		K removalKey = null;
@@ -181,7 +191,7 @@ class Bucket<K, V> {
 			if (entry.getValue().getCreatedTimeStamp() <= greatestTimestamp) {
 				greatestTimestamp = entry.getValue().getCreatedTimeStamp();
 				removalKey = entry.getKey();
-			}	
+			}
 		}
 		this.cache.remove(removalKey);
 	}
