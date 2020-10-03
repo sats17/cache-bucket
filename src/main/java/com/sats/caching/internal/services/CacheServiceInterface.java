@@ -62,6 +62,12 @@ interface CacheServiceInterface {
 	int getBucketCapacity();
 	
 	/**
+	 * Method resize the bucket capacity
+	 * @param bucketCapacity : new capacity.
+	 */
+	void setBucketCapacity(int bucketCapacity);
+	
+	/**
 	 * 
 	 * @return return total entries currently present in cache bucket.
 	 */
@@ -73,5 +79,9 @@ interface CacheServiceInterface {
 	 */
 	long getBucketTTL();
 	
-	void setBucketTTL();
+	/**
+	 * Method update the bucket TTL.
+	 * @param timeToLive
+	 */
+	void setBucketTTL(long timeToLive);
 }
