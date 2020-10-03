@@ -11,16 +11,16 @@ interface CacheServiceInterface {
 
 	/**
 	 * Creates cache bucket object with given size.
-	 * @param size : This size defines that this total number of cache can be store.
+	 * @param bucketCapacity : This capacity defines that this total number of cache can be store.
 	 */
-	void createBucket(int size);
+	void createBucket(int bucketCapacity);
 
 	/**
 	 * Creates cache bucket object with given size and time limit.
-	 * @param size : This size defines that this total number of cache can be store.
+	 * @param bucketCapacity : This capacity defines that this total number of cache can be store.
 	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
 	 */
-	void createBucket(int size, long timeLimit);
+	void createBucket(int bucketCapacity, long timeLimit);
 
 	/**
 	 * @param key
@@ -59,7 +59,7 @@ interface CacheServiceInterface {
 	/**
 	 * returns total cache bucket size.
 	 */
-	int getBucketSize();
+	int getBucketCapacity();
 	
 	/**
 	 * 

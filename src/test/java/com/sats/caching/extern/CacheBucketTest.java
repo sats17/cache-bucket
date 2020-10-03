@@ -23,7 +23,7 @@ public class CacheBucketTest {
 	@Test
 	public void testCacheController() {
 		cache = new CacheController(size);
-		int actualSize = cache.getBucketSize();
+		int actualSize = cache.getBucketCapacity();
 		assertEquals(size, actualSize);
 	}
 	

@@ -84,8 +84,8 @@ public class CacheController implements CacheBucket {
 	 * @return integer : Bucket size.
 	 */
 	@Override
-	public int getBucketSize() {
-		return cacheService.getBucketSize();
+	public int getBucketCapacity() {
+		return cacheService.getBucketCapacity();
 	}
 
 	/**

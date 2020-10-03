@@ -3,9 +3,9 @@ package com.sats.caching.internal.services;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -26,14 +26,14 @@ class Bucket<K, V> {
 	private long timeToLive;
 
 	/**
-	 * Cache size variable.
+	 * Bucket capacity variable.
 	 */
-	private int size;
+	private int bucketCapacity;
 
 	/**
 	 * Cache map.
 	 */
-	private ConcurrentHashMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
+	private ConcurrentMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
 	
 	
 	/**
@@ -89,7 +89,7 @@ class Bucket<K, V> {
 	 * This method returns cache bucket.
 	 * @return ConcurrentHashMap<K, CacheEntries>
 	 */
-	public ConcurrentHashMap<K, CacheEntries> getCache() {
+	public ConcurrentMap<K, CacheEntries> getCache() {
 		return cache;
 	}
 	
@@ -106,8 +106,8 @@ class Bucket<K, V> {
 	 * This method return size of cache.
 	 * @return size
 	 */
-	public int getBucketSize() {
-		return this.size;
+	public int getBucketCapacity() {
+		return this.bucketCapacity;
 	}
 
 	/**
@@ -115,8 +115,8 @@ class Bucket<K, V> {
 	 * @param size
 	 * @return void
 	 */
-	public void setBucketSize(int size) {
-		this.size = size;
+	public void setBucketCapacity(int bucketCapacity) {
+		this.bucketCapacity = bucketCapacity;
 	}
 
 	/**
@@ -208,7 +208,8 @@ class Bucket<K, V> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Bucket<K, V> other = (Bucket) obj;
+		@SuppressWarnings("unchecked")
+		Bucket<K, V> other = (Bucket<K, V>) obj;
 		if (cache == null) {
 			if (other.cache != null)
 				return false;
