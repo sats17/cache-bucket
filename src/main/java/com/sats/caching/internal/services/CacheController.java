@@ -15,19 +15,20 @@ public class CacheController implements CacheBucket {
 	
 	/**
 	 * This constructor creates the Cache Bucket with size and time limit.
-	 * @param size : Total Number of cache entries can be store into Cache Bucket.
-	 * @param timeLimit : Time limit in milliseconds, each key will expire automatically after this time limit. 
+	 * @param capacity : Total Number of cache entries can be store into Cache Bucket.
+	 * @param timeToLive : TTL in milliseconds, each cache present in bucket will expire automatically 
+	 * after given TTL. 
 	 */
-	public CacheController(int size,long timeLimit){
-		cacheService.createBucket(size,timeLimit);
+	public CacheController(int capacity,long timeToLive){
+		cacheService.createBucket(capacity,timeToLive);
 	}
 	
 	/**
 	 * This constructor creates the cache bucket with size.
-	 * @param size : Total Number of cache entries can be store into Cache Bucket.
+	 * @param capacity : Total Number of cache entries can be store into Cache Bucket.
 	 */
-	public CacheController(int size) {
-		cacheService.createBucket(size);
+	public CacheController(int capacity) {
+		cacheService.createBucket(capacity);
 	}
 
 	/**
@@ -87,6 +88,11 @@ public class CacheController implements CacheBucket {
 	public int getBucketCapacity() {
 		return cacheService.getBucketCapacity();
 	}
+	
+	@Override
+	public void setBucketCapacity(int capacity) {
+		cacheService.setBucketCapacity(capacity);
+	}
 
 	/**
 	 * This method clears the cache for given key if it is presents in Cache bucket. 
@@ -115,12 +121,13 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * To be implemented
+	 * Method Update the bucket TTL.
+	 * @param timeToLive: bucket TTL value.
 	 * @return void: Method returns nothing.
 	 */
 	@Override
-	public void setBucketTTL() {
-		
+	public void setBucketTTL(long timeToLive) {
+		cacheService.setBucketTTL(timeToLive);
 	}
 
 	/**

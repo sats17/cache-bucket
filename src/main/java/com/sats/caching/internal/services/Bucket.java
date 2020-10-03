@@ -180,8 +180,8 @@ class Bucket<K, V> {
 		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
 			if (entry.getValue().getCreatedTimeStamp() <= greatestTimestamp) {
 				greatestTimestamp = entry.getValue().getCreatedTimeStamp();
-			}
-			removalKey = entry.getKey();
+				removalKey = entry.getKey();
+			}	
 		}
 		this.cache.remove(removalKey);
 	}

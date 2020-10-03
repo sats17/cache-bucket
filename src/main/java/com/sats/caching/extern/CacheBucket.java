@@ -45,6 +45,12 @@ public interface CacheBucket {
 	public int getBucketCapacity();
 	
 	/**
+	 * This method update bucket capacity with new value.
+	 * @param capacity : New capacity value.
+	 */
+	public void setBucketCapacity(int capacity);
+	
+	/**
 	 * This method clears the cache for given key if it is presents in Cache bucket. 
 	 * @param key : Unique cache key.
 	 * @return void : Method returns nothing.
@@ -64,10 +70,11 @@ public interface CacheBucket {
 	public long getBucketTTL();
 	
 	/**
-	 * To be implemented
+	 * Sets bucket time to live
+	 * @param timeToLive : Cache TTL in miliseconds
 	 * @return void: Method returns nothing.
 	 */
-	public void setBucketTTL();
+	public void setBucketTTL(long timeToLive);
 	
 	/**
 	 * This method gives total number of cache entries present in Cache Bucket.

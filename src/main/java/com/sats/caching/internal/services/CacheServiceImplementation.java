@@ -14,7 +14,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	/**
 	 * Declared cache object.
 	 */
-	private Bucket<Object, Object> cache;
+	private Bucket<Object, Object> bucket;
 
 	/**
 	 * This is cache initialization method, it will create space for cache and
@@ -24,8 +24,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void createBucket(int bucketCapacity) {
-		cache = new Bucket<>();
-		cache.setBucketCapacity(bucketCapacity); 
+		bucket = new Bucket<>();
+		bucket.setBucketCapacity(bucketCapacity); 
 	}
 
 	/**
@@ -36,8 +36,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param timeLimit
 	 */
 	public void createBucket(int bucketCapacity, long timeToLive) {
-		cache = new Bucket<>(timeToLive);
-		cache.setBucketCapacity(bucketCapacity);
+		bucket = new Bucket<>(timeToLive);
+		bucket.setBucketCapacity(bucketCapacity);
 	}
 	
 	/**
@@ -49,11 +49,11 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return void
 	 */
 	public void setCache(Object key, Object value) {
-		if (cache.getTotalEntries() >= cache.getBucketCapacity()) {
-			cache.removeOldestCache();
-			cache.setCache(key, value);
+		if (bucket.getTotalEntries() >= bucket.getBucketCapacity()) {
+			bucket.removeOldestCache();
+			bucket.setCache(key, value);
 		} else {
-			cache.setCache(key, value);
+			bucket.setCache(key, value);
 		}
 	}
 
@@ -64,8 +64,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @return cache
 	 */
 	public Object getCacheByKey(String key) {
-		if (cache.getCache().containsKey(key)) {
-			CacheEntries storage = cache.getCache(key);
+		if (bucket.getCache().containsKey(key)) {
+			CacheEntries storage = bucket.getCache(key);
 			return storage.getValue();
 		} else {
 			return null;
@@ -79,9 +79,9 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public Map<String, Object> getAll() {
 		Map<String, Object> returningObject = new HashMap<>();
-		for (Entry<Object, CacheEntries> entry : cache.getCache().entrySet()) {
+		for (Entry<Object, CacheEntries> entry : bucket.getCache().entrySet()) {
 		    String key = entry.getKey().toString();
-		    CacheEntries value = entry.getValue();
+		    Object value = entry.getValue().getValue();
 		    returningObject.put(key, value);
 		}
 		return returningObject;
@@ -91,7 +91,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * This method clear all cache.
 	 */
 	public void clearCache() {
-		cache.clear();
+		bucket.clear();
 	}
 
 	/**
@@ -100,7 +100,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param key
 	 */
 	public void clearCache(Object key) {
-		cache.clear(key);
+		bucket.clear(key);
 	}
 
 	/**
@@ -118,23 +118,52 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	@Override
 	public int getBucketCapacity() {
-		return cache.getBucketCapacity();
+		return bucket.getBucketCapacity();
+	}
+	
+	/**
+	 * Method sets new bucket capacity. If we want to shrink bucket capacity, then dynamically method will
+	 * remove oldest cache from bucket.
+	 * @param bucketCapacity : New bucket capacity.
+	 */
+	@Override
+	public void setBucketCapacity(int bucketCapacity) {
+		if(bucketCapacity > bucket.getBucketCapacity()) {
+			bucket.setBucketCapacity(bucketCapacity);
+		} else {
+			int diff = bucket.getTotalEntries() - bucketCapacity;
+			for(int i = 0; i < diff; i++) {
+				bucket.removeOldestCache();
+			}
+			bucket.setBucketCapacity(bucketCapacity);
+		}
 	}
 
+	/**
+	 * Method returns bucket TTL.
+	 * @return timeToLive
+	 */
 	@Override
 	public long getBucketTTL() {
-		return cache.getTimeToLive();
+		return bucket.getTimeToLive();
 	}
 
+	/**
+	 * Method set bucket TTL.
+	 * @param timeToLive : bucket TTL.
+	 */
 	@Override
-	public void setBucketTTL() {
-		// TODO Auto-generated method stub
-		
+	public void setBucketTTL(long timeToLive) {
+		bucket.setTimeToLive(timeToLive);
 	}
 
+	/**
+	 * Method return total entries present in bucket.
+	 * @return total entries present in bucket.
+	 */
 	@Override
 	public int getTotalEntries() {
-		return cache.getTotalEntries();
+		return bucket.getTotalEntries();
 	}
 
 }
