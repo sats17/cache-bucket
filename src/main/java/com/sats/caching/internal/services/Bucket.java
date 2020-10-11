@@ -3,6 +3,8 @@ package com.sats.caching.internal.services;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -30,6 +32,8 @@ class Bucket<K, V> {
 	 * Bucket capacity variable.
 	 */
 	private int bucketCapacity;
+	
+	private List<String> index = new ArrayList<>();
 
 	/**
 	 * Map contains key and cacheEntry.
