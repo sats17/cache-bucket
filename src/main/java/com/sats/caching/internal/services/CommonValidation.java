@@ -1,5 +1,6 @@
 package com.sats.caching.internal.services;
 
+import static com.sats.caching.internal.services.Constants.*;
 /**
  * Validation class contains all common validation methods.
  * 
@@ -12,21 +13,21 @@ public class CommonValidation {
 	private CommonValidation() {
 	}
 
-	static void validateCapacity(int capacity) {
-		if (capacity <= 0 || capacity > 200) {
-			throw new IllegalArgumentException("Bucket capacity should be between 1 to 200");
+	static void validateBucketCapacity(int capacity) {
+		if (capacity <= 0 || capacity > BUCKET_CAPACITY) {
+			throw new IllegalArgumentException("Bucket capacity should be between 1 to "+BUCKET_CAPACITY);
 		}
 	}
 
-	static void validateTTL(long timeToLive) {
-		if (timeToLive <= 0 || timeToLive > 14400000) {
-			throw new IllegalArgumentException("Time to live should be between 1 to 14400000");
+	static void validateBucketTTL(long timeToLive) {
+		if (timeToLive <= 0 || timeToLive > BUCKET_TTL) {
+			throw new IllegalArgumentException("Time to live should be between 1 to "+BUCKET_TTL);
 		}
 	}
 
 	static void validateKey(String key) {
-		if (key == null || key.isBlank() || key.length() > 10) {
-			throw new IllegalArgumentException("Key should be proper, max length of key is 10.");
+		if (key == null || key.isBlank() || key.length() > KEY_LENGTH) {
+			throw new IllegalArgumentException("Key should be proper, max length of key is "+KEY_LENGTH);
 		}
 	}
 

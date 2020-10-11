@@ -3,6 +3,8 @@ package com.sats.caching.internal.services;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
 import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
@@ -30,16 +32,27 @@ class Bucket<K, V> {
 	 * Bucket capacity variable.
 	 */
 	private int bucketCapacity;
+	
+	/**
+	 * Bucket index storage, this consist all keys.
+	 */
+	private List<String> index;
 
 	/**
 	 * Map contains key and cacheEntry.
 	 */
-	private ConcurrentMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
+	private ConcurrentMap<K, CacheEntries> cache;
+	
+	@SuppressWarnings("unused")
+	private Bucket() {}
 
 	/**
-	 * Default constructor for bucket.
+	 * Constructor for bucket.
 	 */
-	public Bucket() {
+	public Bucket(int bucketCapacity) {
+		this.setIndex(new ArrayList<>(bucketCapacity));
+		this.cache = new ConcurrentHashMap<>(bucketCapacity);
+		this.bucketCapacity = bucketCapacity;
 	}
 
 	/**
@@ -48,7 +61,10 @@ class Bucket<K, V> {
 	 * 
 	 * @param timeToLive : TTL value.
 	 */
-	public Bucket(long timeToLive) {
+	public Bucket(int bucketCapacity, long timeToLive) {
+		this.setIndex(new ArrayList<>(bucketCapacity));
+		this.cache = new ConcurrentHashMap<>(bucketCapacity);
+		this.bucketCapacity = bucketCapacity;
 		this.timeToLive = timeToLive;
 		initializeScheduler();
 	}
@@ -78,12 +94,27 @@ class Bucket<K, V> {
 			CacheEntries value = entry.getValue();
 			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeToLive;
 			long currentTimeStamp = System.currentTimeMillis();
-			if (createdTimeStamp < currentTimeStamp) {
-				clear(key);
+			if (createdTimeStamp < currentTimeStamp && key != null) {
+				this.clear(key);
+				this.index.remove(key);
 			}
 		}
 	}
 
+	/**
+	 * @return the index
+	 */
+	public List<String> getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(List<String> index) {
+		this.index = index;
+	}
+	
 	/**
 	 * This method returns cache bucket.
 	 * 
@@ -121,6 +152,30 @@ class Bucket<K, V> {
 	public void setBucketCapacity(int bucketCapacity) {
 		this.bucketCapacity = bucketCapacity;
 	}
+	
+	/**
+	 * Method shrink the cache bucket for given size.
+	 * 
+	 * @param bucketCapacity : bucket capacity.
+	 */
+	public void shrinkBucket(int bucketCapacity) {
+		ConcurrentMap<K, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
+		if(this.cache.isEmpty()) {
+			this.cache = null;
+			this.cache = temp;
+			temp = null;
+			((ArrayList<String>) this.index).trimToSize();
+			this.bucketCapacity = bucketCapacity;
+		} else {
+			temp.putAll(this.cache);
+			this.cache = null;
+			this.cache = temp;
+			temp = null;
+			((ArrayList<String>) this.index).trimToSize();
+			this.bucketCapacity = bucketCapacity;
+		}
+		
+	}
 
 	/**
 	 * This method get bucket TTL.
@@ -150,6 +205,7 @@ class Bucket<K, V> {
 	 */
 	public void setCache(K key, V value) {
 		this.cache.put(key, new CacheEntries(value));
+		this.index.add((String) key);
 	}
 
 	/**
@@ -160,6 +216,7 @@ class Bucket<K, V> {
 	 */
 	public void clear(K key) {
 		this.cache.remove(key);
+		this.index.remove(key);
 	}
 
 	/**
@@ -176,24 +233,18 @@ class Bucket<K, V> {
 	 */
 	public void clear() {
 		this.cache.clear();
+		this.index.clear();
 	}
 
 	/**
-	 * This method remove oldest value from bucket, this method declare current time and iterate over 
-	 * map, if any cache object created time stamp is less than current greatest time stamp then it will
-	 * replace current greatest time stamp to created time stamp of cache object and assign removalKey with 
-	 * that key. Later on which key has removalKey assign it will be cleared.
+	 * This method remove oldest value from bucket, using index.
 	 */
 	public void removeOldestCache() {
-		long greatestTimestamp = System.currentTimeMillis();
-		K removalKey = null;
-		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
-			if (entry.getValue().getCreatedTimeStamp() <= greatestTimestamp) {
-				greatestTimestamp = entry.getValue().getCreatedTimeStamp();
-				removalKey = entry.getKey();
-			}
+		String oldestKey = this.index.get(0);
+		if(oldestKey != null) {
+			this.cache.remove(oldestKey);
+			this.index.remove(oldestKey);
 		}
-		this.cache.remove(removalKey);
 	}
 
 	@Override

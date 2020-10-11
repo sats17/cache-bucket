@@ -24,8 +24,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param bucketCapacity : capacity of bucket.
 	 */
 	public void createBucket(int bucketCapacity) {
-		bucket = new Bucket<>();
-		bucket.setBucketCapacity(bucketCapacity); 
+		bucket = new Bucket<>(bucketCapacity);
 	}
 
 	/**
@@ -35,8 +34,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param timeToLive : time to live each cache presents in bucket.
 	 */
 	public void createBucket(int bucketCapacity, long timeToLive) {
-		bucket = new Bucket<>(timeToLive);
-		bucket.setBucketCapacity(bucketCapacity);
+		bucket = new Bucket<>(bucketCapacity, timeToLive);
 	}
 	
 	/**
@@ -135,7 +133,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 			for(int i = 0; i < diff; i++) {
 				bucket.removeOldestCache();
 			}
-			bucket.setBucketCapacity(bucketCapacity);
+			bucket.shrinkBucket(bucketCapacity);
 		}
 	}
 
