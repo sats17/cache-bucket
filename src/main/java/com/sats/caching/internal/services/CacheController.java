@@ -26,8 +26,8 @@ public class CacheController implements CacheBucket {
 	 *                                  it's conditions.
 	 */
 	public CacheController(int capacity, long timeToLive) {
-		validateCapacity(capacity);
-		validateTTL(timeToLive);
+		validateBucketCapacity(capacity);
+		validateBucketTTL(timeToLive);
 		cacheService.createBucket(capacity, timeToLive);
 	}
 
@@ -39,7 +39,7 @@ public class CacheController implements CacheBucket {
 	 * @throws IllegalArgumentException when capacity does not meet it's conditions.
 	 */
 	public CacheController(int capacity) {
-		validateCapacity(capacity);
+		validateBucketCapacity(capacity);
 		cacheService.createBucket(capacity);
 	}
 
@@ -122,7 +122,7 @@ public class CacheController implements CacheBucket {
 	 */
 	@Override
 	public void setBucketCapacity(int capacity) {
-		validateCapacity(capacity);
+		validateBucketCapacity(capacity);
 		cacheService.setBucketCapacity(capacity);
 	}
 
@@ -162,7 +162,7 @@ public class CacheController implements CacheBucket {
 	 */
 	@Override
 	public void setBucketTTL(long timeToLive) {
-		validateTTL(timeToLive);
+		validateBucketTTL(timeToLive);
 		cacheService.setBucketTTL(timeToLive);
 	}
 
