@@ -33,7 +33,10 @@ class Bucket<K, V> {
 	 */
 	private int bucketCapacity;
 	
-	private List<String> index = new ArrayList<>();
+	/**
+	 * Bucket index storage, this consist all keys.
+	 */
+	private List<String> index;
 
 	/**
 	 * Map contains key and cacheEntry.
@@ -44,6 +47,7 @@ class Bucket<K, V> {
 	 * Default constructor for bucket.
 	 */
 	public Bucket() {
+		this.setIndex(new ArrayList<>());
 	}
 
 	/**
@@ -53,6 +57,7 @@ class Bucket<K, V> {
 	 * @param timeToLive : TTL value.
 	 */
 	public Bucket(long timeToLive) {
+		this.setIndex(new ArrayList<>());
 		this.timeToLive = timeToLive;
 		initializeScheduler();
 	}
@@ -88,6 +93,20 @@ class Bucket<K, V> {
 		}
 	}
 
+	/**
+	 * @return the index
+	 */
+	public List<String> getIndex() {
+		return index;
+	}
+
+	/**
+	 * @param index the index to set
+	 */
+	public void setIndex(List<String> index) {
+		this.index = index;
+	}
+	
 	/**
 	 * This method returns cache bucket.
 	 * 
