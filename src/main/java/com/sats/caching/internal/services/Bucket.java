@@ -88,7 +88,8 @@ class Bucket<K, V> {
 			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeToLive;
 			long currentTimeStamp = System.currentTimeMillis();
 			if (createdTimeStamp < currentTimeStamp) {
-				clear(key);
+				this.clear(key);
+				this.index.remove(key);
 			}
 		}
 	}
@@ -184,6 +185,7 @@ class Bucket<K, V> {
 	 */
 	public void clear(K key) {
 		this.cache.remove(key);
+		this.index.remove(key);
 	}
 
 	/**
@@ -200,6 +202,7 @@ class Bucket<K, V> {
 	 */
 	public void clear() {
 		this.cache.clear();
+		this.index.clear();
 	}
 
 	/**
