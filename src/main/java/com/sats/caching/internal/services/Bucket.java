@@ -173,6 +173,7 @@ class Bucket<K, V> {
 	 */
 	public void setCache(K key, V value) {
 		this.cache.put(key, new CacheEntries(value));
+		this.index.add((String) key);
 	}
 
 	/**
