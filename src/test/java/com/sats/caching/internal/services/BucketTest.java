@@ -20,7 +20,7 @@ public class BucketTest {
 	
 	@Test
 	public void testBucketCreation() {
-		bucket = new Bucket<>();
+		bucket = new Bucket<>(10);
 		List<String> index = bucket.getIndex();
 		assertNotNull(bucket);
 		assertEquals(index, bucket.getIndex());
@@ -29,7 +29,7 @@ public class BucketTest {
 	
 	@Test 
 	public void testClearByKeyMethod() {
-		bucket = new Bucket<>();
+		bucket = new Bucket<>(10);
 		bucket.setBucketCapacity(5);
 		bucket.setCache("first", "value1");
 		bucket.setCache("second", "value2");
@@ -44,7 +44,7 @@ public class BucketTest {
 	
 	@Test
 	public void testClearMethod() {
-		bucket = new Bucket<>();
+		bucket = new Bucket<>(10);
 		bucket.setBucketCapacity(5);
 		bucket.setCache("first", "value1");
 		bucket.setCache("second", "value2");
