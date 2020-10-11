@@ -209,15 +209,9 @@ class Bucket<K, V> {
 	 * that key. Later on which key has removalKey assign it will be cleared.
 	 */
 	public void removeOldestCache() {
-		long greatestTimestamp = System.currentTimeMillis();
-		K removalKey = null;
-		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
-			if (entry.getValue().getCreatedTimeStamp() <= greatestTimestamp) {
-				greatestTimestamp = entry.getValue().getCreatedTimeStamp();
-				removalKey = entry.getKey();
-			}
-		}
-		this.cache.remove(removalKey);
+		String oldestKey = this.index.get(0);
+		this.cache.remove(oldestKey);
+		this.index.remove(oldestKey);
 	}
 
 	@Override
