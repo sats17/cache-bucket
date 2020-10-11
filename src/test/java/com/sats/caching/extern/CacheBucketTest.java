@@ -15,7 +15,7 @@ public class CacheBucketTest {
 	
 	CacheBucket cache = null;
 	int capacity = 5;
-	long bucketTTL = 50000;
+	long bucketTTL = 5000;
 	
 	@AfterEach
 	public void cleanUp() {
@@ -95,7 +95,7 @@ public class CacheBucketTest {
 	}
 	
 	@Test
-	public void setBucketCapacityLessThanEarlierCapacity() {
+	public void testSetBucketCapacityLessThanEarlierCapacity() {
 		cache = new CacheController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
@@ -108,7 +108,7 @@ public class CacheBucketTest {
 	}
 	
 	@Test
-	public void setBucketCapacityGreaterThanEarlierCapacity() {
+	public void testSetBucketCapacityGreaterThanEarlierCapacity() {
 		cache = new CacheController(capacity);
 		cache.setBucketCapacity(7);
 		assertEquals(7, cache.getBucketCapacity());
@@ -119,5 +119,17 @@ public class CacheBucketTest {
 		cache = new CacheController(capacity, bucketTTL);
 		long actualTTL = cache.getBucketTTL();
 		assertEquals(bucketTTL, actualTTL);
+	}
+	
+	@Test
+	public void testAutoCacheClear() throws InterruptedException {
+		cache = new CacheController(capacity, bucketTTL);
+		cache.setCache("first", "value1");
+		Thread.sleep(5500);
+		cache.setCache("second", "value2");
+		cache.setCache("third", "value3");
+		cache.setCache("four", "value4");
+		cache.setCache("five", "value5");
+		assertEquals(4, cache.getTotalEntries());
 	}
 }
