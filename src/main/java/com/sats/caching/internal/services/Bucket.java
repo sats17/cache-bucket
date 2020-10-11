@@ -41,13 +41,18 @@ class Bucket<K, V> {
 	/**
 	 * Map contains key and cacheEntry.
 	 */
-	private ConcurrentMap<K, CacheEntries> cache = new ConcurrentHashMap<>();
+	private ConcurrentMap<K, CacheEntries> cache;
+	
+	@SuppressWarnings("unused")
+	private Bucket() {}
 
 	/**
-	 * Default constructor for bucket.
+	 * Constructor for bucket.
 	 */
-	public Bucket() {
-		this.setIndex(new ArrayList<>());
+	public Bucket(int bucketCapacity) {
+		this.setIndex(new ArrayList<>(bucketCapacity));
+		this.cache = new ConcurrentHashMap<>(bucketCapacity);
+		this.bucketCapacity = bucketCapacity;
 	}
 
 	/**
@@ -56,8 +61,10 @@ class Bucket<K, V> {
 	 * 
 	 * @param timeToLive : TTL value.
 	 */
-	public Bucket(long timeToLive) {
-		this.setIndex(new ArrayList<>());
+	public Bucket(int bucketCapacity, long timeToLive) {
+		this.setIndex(new ArrayList<>(bucketCapacity));
+		this.cache = new ConcurrentHashMap<>(bucketCapacity);
+		this.bucketCapacity = bucketCapacity;
 		this.timeToLive = timeToLive;
 		initializeScheduler();
 	}
@@ -87,7 +94,7 @@ class Bucket<K, V> {
 			CacheEntries value = entry.getValue();
 			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeToLive;
 			long currentTimeStamp = System.currentTimeMillis();
-			if (createdTimeStamp < currentTimeStamp) {
+			if (createdTimeStamp < currentTimeStamp && key != null) {
 				this.clear(key);
 				this.index.remove(key);
 			}
@@ -144,6 +151,30 @@ class Bucket<K, V> {
 	 */
 	public void setBucketCapacity(int bucketCapacity) {
 		this.bucketCapacity = bucketCapacity;
+	}
+	
+	/**
+	 * Method shrink the cache bucket for given size.
+	 * 
+	 * @param bucketCapacity : bucket capacity.
+	 */
+	public void shrinkBucket(int bucketCapacity) {
+		ConcurrentMap<K, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
+		if(this.cache.isEmpty()) {
+			this.cache = null;
+			this.cache = temp;
+			temp = null;
+			((ArrayList<String>) this.index).trimToSize();
+			this.bucketCapacity = bucketCapacity;
+		} else {
+			temp.putAll(this.cache);
+			this.cache = null;
+			this.cache = temp;
+			temp = null;
+			((ArrayList<String>) this.index).trimToSize();
+			this.bucketCapacity = bucketCapacity;
+		}
+		
 	}
 
 	/**
@@ -206,15 +237,14 @@ class Bucket<K, V> {
 	}
 
 	/**
-	 * This method remove oldest value from bucket, this method declare current time and iterate over 
-	 * map, if any cache object created time stamp is less than current greatest time stamp then it will
-	 * replace current greatest time stamp to created time stamp of cache object and assign removalKey with 
-	 * that key. Later on which key has removalKey assign it will be cleared.
+	 * This method remove oldest value from bucket, using index.
 	 */
 	public void removeOldestCache() {
 		String oldestKey = this.index.get(0);
-		this.cache.remove(oldestKey);
-		this.index.remove(oldestKey);
+		if(oldestKey != null) {
+			this.cache.remove(oldestKey);
+			this.index.remove(oldestKey);
+		}
 	}
 
 	@Override
