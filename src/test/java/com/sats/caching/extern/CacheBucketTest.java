@@ -1,6 +1,7 @@
 package com.sats.caching.extern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Map;
@@ -77,6 +78,7 @@ public class CacheBucketTest {
 		cache.setCache("five", "value5");
 		cache.setCache("six", "value6");
 		assertEquals(5, cache.getTotalEntries());
+		assertNull(cache.getCache("first"));
 	}
 	
 	@Test
