@@ -17,7 +17,7 @@ import com.sats.caching.internal.services.CacheController;
 public class AppTest {
 
 	public static void main(String[] args) throws InterruptedException {
-		System.out.println("Running started"); 
+		System.out.println("Running started");  
 		ConcurrentMap<String, Object> ab = new ConcurrentHashMap<>(2);
 		ab.put("ax", "assas");
 		ab.put("asf", "asfas");
