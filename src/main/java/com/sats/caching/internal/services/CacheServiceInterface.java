@@ -35,7 +35,7 @@ interface CacheServiceInterface {
 	 * @param key : Unique key for cache.
 	 * @param value : Actual cache object.
 	 */
-	void setCache(Object key, Object value);
+	void setCache(String key, Object value);
 
 	/**
 	 * Gets cache from bucket where key matches.
@@ -57,21 +57,12 @@ interface CacheServiceInterface {
 	 * 
 	 * @param key : Unique cache key.
 	 */
-	void clearCache(Object key);
+	void clearCache(String key);
 
 	/**
 	 * Wipe out all stored cache from bucket.
 	 */
 	void clearCache();
-
-	/**
-	 * Future implementation, where each cache can have their own time expiration
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	@Deprecated
-	void setCacheWithTimeExpire(Object key, Object value);
 
 	/**
 	 * Gets bucket capacity.

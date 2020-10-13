@@ -17,11 +17,8 @@ import java.util.concurrent.TimeUnit;
  * 
  * @version 1.0.0
  * @author Sats17
- *
- * @param <K>
- * @param <V>
  */
-class Bucket<K, V> {
+class Bucket {
 
 	/**
 	 * Bucket TTL variable.
@@ -41,7 +38,7 @@ class Bucket<K, V> {
 	/**
 	 * Map contains key and cacheEntry.
 	 */
-	private ConcurrentMap<K, CacheEntries> cache;
+	private ConcurrentMap<String, CacheEntries> cache;
 	
 	@SuppressWarnings("unused")
 	private Bucket() {}
@@ -89,8 +86,8 @@ class Bucket<K, V> {
 	 * plus TTL then that cache will be clear.
 	 */
 	private void cacheAutoClear() {
-		for (Map.Entry<K, CacheEntries> entry : cache.entrySet()) {
-			K key = entry.getKey();
+		for (Map.Entry<String, CacheEntries> entry : cache.entrySet()) {
+			String key = entry.getKey();
 			CacheEntries value = entry.getValue();
 			long createdTimeStamp = value.getCreatedTimeStamp() + this.timeToLive;
 			long currentTimeStamp = System.currentTimeMillis();
@@ -120,7 +117,7 @@ class Bucket<K, V> {
 	 * 
 	 * @return ConcurrentHashMap<K, CacheEntries>
 	 */
-	public ConcurrentMap<K, CacheEntries> getCache() {
+	public ConcurrentMap<String, CacheEntries> getCache() {
 		return cache;
 	}
 
@@ -159,7 +156,7 @@ class Bucket<K, V> {
 	 * @param bucketCapacity : bucket capacity.
 	 */
 	public void shrinkBucket(int bucketCapacity) {
-		ConcurrentMap<K, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
+		ConcurrentMap<String, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
 		if(this.cache.isEmpty()) {
 			this.cache = null;
 			this.cache = temp;
@@ -203,7 +200,7 @@ class Bucket<K, V> {
 	 * @param value
 	 * @return void
 	 */
-	public void setCache(K key, V value) {
+	public void setCache(String key, Object value) {
 		this.cache.put(key, new CacheEntries(value));
 		this.index.add((String) key);
 	}
@@ -214,7 +211,7 @@ class Bucket<K, V> {
 	 * @param key
 	 * @return void
 	 */
-	public void clear(K key) {
+	public void clear(String key) {
 		this.cache.remove(key);
 		this.index.remove(key);
 	}
@@ -270,7 +267,7 @@ class Bucket<K, V> {
 		if (getClass() != obj.getClass())
 			return false;
 		@SuppressWarnings("unchecked")
-		Bucket<K, V> other = (Bucket<K, V>) obj;
+		Bucket other = (Bucket) obj;
 		if (cache == null) {
 			if (other.cache != null)
 				return false;
