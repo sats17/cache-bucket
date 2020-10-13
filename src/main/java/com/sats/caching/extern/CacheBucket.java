@@ -24,16 +24,6 @@ public interface CacheBucket {
 	public void setCache(String key, Object value);
 
 	/**
-	 * Not implemented
-	 * 
-	 * @param key
-	 * @param value
-	 * @param canCacheExpire
-	 */
-	@Deprecated
-	public void setCache(String key, Object value, Boolean canCacheExpire);
-
-	/**
 	 * This method returns cache object from cache bucket for matching key.
 	 * 
 	 * @param key : Unique cache key that present in cache bucket. Key should not be null, blank and it's
