@@ -1,13 +1,5 @@
 package com.sats.JavaSimpleInMemoryCache;
 
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import com.sats.caching.extern.CacheBucket;
 import com.sats.caching.internal.services.CacheController;
 /**
@@ -15,9 +7,13 @@ import com.sats.caching.internal.services.CacheController;
  */
 
 public class AppTest {
+	
+	long a;
 
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Running started"); 
+		AppTest a = new AppTest();
+		System.out.println(a.a);
 //		ConcurrentMap<String, Object> ab = new ConcurrentHashMap<>(7);
 //		ab.put("ax", "assas");
 //		ab.put("asf", "asfas");
@@ -54,7 +50,7 @@ public class AppTest {
 //		abv.remove(0);
 //		System.out.println(abv);
 //		CacheBucket controller2 = new CacheController(200,10000);
-		CacheBucket controller = new CacheController(200,10000);
+		CacheBucket controller = new CacheController(200);
 //		String ab = "  ";
 //		String bc = null;
 //		String cd = "";

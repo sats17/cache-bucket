@@ -109,6 +109,13 @@ public class CacheBucketIntegrationTest {
 		cache.setBucketCapacity(3);
 		assertEquals(3, cache.getBucketCapacity());
 	}
+	
+	@Test
+	public void testSetBucketCapacityLessThanEarlierCapacityWithNoDataInBucket() {
+		cache = new CacheController(capacity);
+		cache.setBucketCapacity(2);
+		assertEquals(2, cache.getBucketCapacity());
+	}
 
 	@Test
 	public void testSetBucketCapacityLessThanEarlierCapacity() {
@@ -218,6 +225,41 @@ public class CacheBucketIntegrationTest {
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
 		assertEquals(thrown.getMessage(), CACHE_VALUE_NOT_VALID_MESSAGE);
 	}
+	
+	@Test
+	public void testGetTTL() {
+		cache = new CacheController(capacity);
+		cache.setCache("first", "value1");
+		cache.setCache("second", "value2");
+		cache.setCache("third", "value3");
+		assertEquals(-1, cache.getBucketTTL());
+	}
+	
+	@Test
+	public void testSetTTL() {
+		cache = new CacheController(capacity);
+		cache.setCache("first", "value1");
+		cache.setCache("second", "value2");
+		cache.setCache("third", "value3");
+		cache.setBucketTTL(1000);
+		assertEquals(1000, cache.getBucketTTL());
+	}
+	
+	@Test
+	public void testSetTTLWithAutoCacheClearAfterBucketMigration() throws InterruptedException {
+		cache = new CacheController(capacity);
+		cache.setCache("first", "value1");
+		Thread.sleep(1000);
+		cache.setCache("second", "value2");
+		cache.setCache("third", "value3");
+		cache.setBucketTTL(500);
+		Thread.sleep(10);
+		assertEquals(2, cache.getTotalEntries());
+		Thread.sleep(1000);
+		assertEquals(0, cache.getTotalEntries());
+		assertEquals(500, cache.getBucketTTL());
+	}
+
 
 	/*
 	 * All Test cache for cache bucket with capacity and TTL.

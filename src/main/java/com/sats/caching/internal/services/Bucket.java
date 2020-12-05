@@ -23,13 +23,13 @@ class Bucket {
 	/**
 	 * Bucket TTL variable.
 	 */
-	private long timeToLive;
+	private long timeToLive = -1;
 
 	/**
 	 * Bucket capacity variable.
 	 */
-	private int bucketCapacity;
-	
+	private int bucketCapacity = -1;
+
 	/**
 	 * Bucket index storage, this consist all keys.
 	 */
@@ -39,9 +39,10 @@ class Bucket {
 	 * Map contains key and cacheEntry.
 	 */
 	private ConcurrentMap<String, CacheEntries> cache;
-	
+
 	@SuppressWarnings("unused")
-	private Bucket() {}
+	private Bucket() {
+	}
 
 	/**
 	 * Constructor for bucket.
@@ -82,8 +83,8 @@ class Bucket {
 	}
 
 	/**
-	 * This method iterate over cache map and if current timestamp is greater than cache createdtimestamp
-	 * plus TTL then that cache will be clear.
+	 * This method iterate over cache map and if current timestamp is greater than
+	 * cache createdtimestamp plus TTL then that cache will be clear.
 	 */
 	private void cacheAutoClear() {
 		for (Map.Entry<String, CacheEntries> entry : cache.entrySet()) {
@@ -111,7 +112,7 @@ class Bucket {
 	public void setIndex(List<String> index) {
 		this.index = index;
 	}
-	
+
 	/**
 	 * This method returns cache bucket.
 	 * 
@@ -149,15 +150,17 @@ class Bucket {
 	public void setBucketCapacity(int bucketCapacity) {
 		this.bucketCapacity = bucketCapacity;
 	}
-	
+
 	/**
 	 * Method shrink the cache bucket for given size.
 	 * 
+	 * @implNote : Method use temporary storage to shrink the bucket. Nothing but
+	 *           creates new bucket with new size and moves all data.
 	 * @param bucketCapacity : bucket capacity.
 	 */
 	public void shrinkBucket(int bucketCapacity) {
 		ConcurrentMap<String, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
-		if(this.cache.isEmpty()) {
+		if (this.cache.isEmpty()) {
 			this.cache = null;
 			this.cache = temp;
 			temp = null;
@@ -171,7 +174,7 @@ class Bucket {
 			((ArrayList<String>) this.index).trimToSize();
 			this.bucketCapacity = bucketCapacity;
 		}
-		
+
 	}
 
 	/**
@@ -190,7 +193,13 @@ class Bucket {
 	 * @return void
 	 */
 	public void setTimeToLive(long timeToLive) {
-		this.timeToLive = timeToLive;
+		if (this.timeToLive == -1) {
+			this.timeToLive = timeToLive;
+			initializeScheduler();
+		} else {
+			this.timeToLive = timeToLive;
+		}
+
 	}
 
 	/**
@@ -202,7 +211,7 @@ class Bucket {
 	 */
 	public void setCache(String key, Object value) {
 		this.cache.put(key, new CacheEntries(value));
-		this.index.add((String) key);
+		this.index.add(key);
 	}
 
 	/**
@@ -238,7 +247,7 @@ class Bucket {
 	 */
 	public void removeOldestCache() {
 		String oldestKey = this.index.get(0);
-		if(oldestKey != null) {
+		if (oldestKey != null) {
 			this.cache.remove(oldestKey);
 			this.index.remove(oldestKey);
 		}
