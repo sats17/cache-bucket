@@ -15,25 +15,25 @@ public class CommonValidation {
 
 	static void validateBucketCapacity(int capacity) {
 		if (capacity <= 0 || capacity > BUCKET_CAPACITY) {
-			throw new IllegalArgumentException("Bucket capacity should be between 1 to "+BUCKET_CAPACITY);
+			throw new IllegalArgumentException(BUCKET_CAPACITY_NOT_VALID_MESSAGE);
 		}
 	}
 
 	static void validateBucketTTL(long timeToLive) {
 		if (timeToLive <= 0 || timeToLive > BUCKET_TTL) {
-			throw new IllegalArgumentException("Time to live should be between 1 to "+BUCKET_TTL);
+			throw new IllegalArgumentException(BUCKET_TTL_NOT_VALID_MESSAGE);
 		}
 	}
 
 	static void validateKey(String key) {
 		if (key == null || key.isBlank() || key.length() > KEY_LENGTH) {
-			throw new IllegalArgumentException("Key should be proper, max length of key is "+KEY_LENGTH);
+			throw new IllegalArgumentException(CACHE_KEY_NOT_VALID_MESSAGE);
 		}
 	}
 
 	static void validateValue(Object value) {
 		if (value == null) {
-			throw new IllegalArgumentException("Value should not be null");
+			throw new IllegalArgumentException(CACHE_VALUE_NOT_VALID_MESSAGE);
 		}
 	}
 
