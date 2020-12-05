@@ -18,4 +18,8 @@ class Constants {
 	public static final long BUCKET_TTL = 14400000;
 	public static final int KEY_LENGTH = 30;
 	
+	public static final String BUCKET_CAPACITY_NOT_VALID_MESSAGE = "Bucket capacity should be between 1 to "+BUCKET_CAPACITY;
+	public static final String BUCKET_TTL_NOT_VALID_MESSAGE = "Time to live should be between 1 to "+BUCKET_TTL;
+	public static final String CACHE_KEY_NOT_VALID_MESSAGE = "Key should be proper, max length of key is "+KEY_LENGTH;
+	public static final String CACHE_VALUE_NOT_VALID_MESSAGE = "Value should not be null";
 }

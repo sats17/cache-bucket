@@ -244,38 +244,4 @@ class Bucket {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "Cache [timeToLive=" + timeToLive + ", cache=" + cache + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((cache == null) ? 0 : cache.hashCode());
-		result = prime * result + (int) (timeToLive ^ (timeToLive >>> 32));
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		@SuppressWarnings("unchecked")
-		Bucket other = (Bucket) obj;
-		if (cache == null) {
-			if (other.cache != null)
-				return false;
-		} else if (!cache.equals(other.cache))
-			return false;
-		if (timeToLive != other.timeToLive)
-			return false;
-		return true;
-	}
-
 }
