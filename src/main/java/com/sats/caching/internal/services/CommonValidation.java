@@ -26,7 +26,7 @@ public class CommonValidation {
 	}
 
 	static void validateKey(String key) {
-		if (key == null || key.isBlank() || key.length() > KEY_LENGTH) {
+		if (key == null || key.trim().length() == 0 || key.length() > KEY_LENGTH) {
 			throw new IllegalArgumentException(CACHE_KEY_NOT_VALID_MESSAGE);
 		}
 	}

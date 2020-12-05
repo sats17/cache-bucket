@@ -76,7 +76,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	public Map<String, Object> getAll() {
 		Map<String, Object> returningObject = new HashMap<>();
 		for (Entry<String, CacheEntries> entry : bucket.getCache().entrySet()) {
-		    String key = entry.getKey().toString();
+		    String key = entry.getKey();
 		    Object value = entry.getValue().getValue();
 		    returningObject.put(key, value);
 		}
