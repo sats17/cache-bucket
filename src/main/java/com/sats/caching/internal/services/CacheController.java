@@ -65,24 +65,6 @@ public class CacheController implements CacheBucket {
 	}
 
 	/**
-	 * Set cache, there is different time limit for every object in cache. Currently
-	 * not implemented
-	 * 
-	 * @param key
-	 * @param value
-	 * @param timeExpire
-	 */
-	@Deprecated
-	public void setCache(String key, Object value, Boolean timeExpire) {
-		if (timeExpire) {
-			cacheService.setCacheWithTimeExpire(key, value);
-		} else {
-			cacheService.setCache(key, value);
-		}
-
-	}
-
-	/**
 	 * This method returns cache object from cache bucket for matching key.
 	 * 
 	 * @param key : Unique cache key that present in cache bucket. Key should not be null, blank and it's

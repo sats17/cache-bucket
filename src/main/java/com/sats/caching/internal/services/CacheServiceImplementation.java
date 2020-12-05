@@ -16,7 +16,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	/**
 	 * Bucket object.
 	 */
-	private Bucket<Object, Object> bucket;
+	private Bucket bucket;
 
 	/**
 	 * This is bucket creation method, it will create bucket having spaces for cache that we can store.
@@ -24,7 +24,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param bucketCapacity : capacity of bucket.
 	 */
 	public void createBucket(int bucketCapacity) {
-		bucket = new Bucket<>(bucketCapacity);
+		bucket = new Bucket(bucketCapacity);
 	}
 
 	/**
@@ -34,7 +34,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param timeToLive : time to live each cache presents in bucket.
 	 */
 	public void createBucket(int bucketCapacity, long timeToLive) {
-		bucket = new Bucket<>(bucketCapacity, timeToLive);
+		bucket = new Bucket(bucketCapacity, timeToLive);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * @param key : Unique key for cache.
 	 * @param value : Cache object.
 	 */
-	public void setCache(Object key, Object value) {
+	public void setCache(String key, Object value) {
 		if (bucket.getTotalEntries() >= bucket.getBucketCapacity()) {
 			bucket.removeOldestCache();
 			bucket.setCache(key, value);
@@ -75,7 +75,7 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 */
 	public Map<String, Object> getAll() {
 		Map<String, Object> returningObject = new HashMap<>();
-		for (Entry<Object, CacheEntries> entry : bucket.getCache().entrySet()) {
+		for (Entry<String, CacheEntries> entry : bucket.getCache().entrySet()) {
 		    String key = entry.getKey().toString();
 		    Object value = entry.getValue().getValue();
 		    returningObject.put(key, value);
@@ -95,19 +95,8 @@ class CacheServiceImplementation implements CacheServiceInterface {
 	 * 
 	 * @param key : Cache key
 	 */
-	public void clearCache(Object key) {
+	public void clearCache(String key) {
 		bucket.clear(key);
-	}
-
-	/**
-	 * Currently in development
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	@Deprecated
-	public void setCacheWithTimeExpire(Object key, Object value) {
-		// Under development
 	}
 
 	/**
