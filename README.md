@@ -1,3 +1,7 @@
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=coverage)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=alert_status)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
+
+
 # In Memory Serverside Cache
 Simple In-Memory java cache library.
 <br>
