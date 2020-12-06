@@ -1,7 +1,7 @@
-package com.sats.caching.internal.services;
+package com.github.sats17.cache.internal.services;
 
-import static com.sats.caching.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
-import static com.sats.caching.internal.services.Constants.SCHEDULAR_PERIOD;
+import static com.github.sats17.cache.internal.services.Constants.SCHEDULAR_INTIAL_DELAY;
+import static com.github.sats17.cache.internal.services.Constants.SCHEDULAR_PERIOD;
 
 import java.util.ArrayList;
 import java.util.List;

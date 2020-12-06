@@ -1,4 +1,4 @@
-package com.sats.caching.extern;
+package com.github.sats17.cache.extern;
 
 import java.util.Map;
 

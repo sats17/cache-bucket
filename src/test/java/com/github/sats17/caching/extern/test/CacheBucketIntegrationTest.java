@@ -1,4 +1,4 @@
-package com.sats.caching.extern;
+package com.github.sats17.caching.extern.test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -11,7 +11,8 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import com.sats.caching.internal.services.CacheController;
+import com.github.sats17.cache.extern.CacheBucket;
+import com.github.sats17.cache.internal.services.BucketController;
 
 public class CacheBucketIntegrationTest {
 
@@ -41,14 +42,14 @@ public class CacheBucketIntegrationTest {
 	 */
 	@Test
 	public void testCacheController() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		int actualCapacity = cache.getBucketCapacity();
 		assertEquals(capacity, actualCapacity);
 	}
 
 	@Test
 	public void testSetCache() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		String value = "value1";
 		cache.setCache("key1", value);
 		assertEquals(value, cache.getCache("key1"));
@@ -56,7 +57,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetCache() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -65,7 +66,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetCacheWhenWrongKeyPassedAndMethodReturnsNull() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -74,7 +75,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetAll() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -87,7 +88,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testOldestCacheRemoval() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -100,27 +101,27 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetBucketCapacity() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		assertEquals(capacity, cache.getBucketCapacity());
 	}
 
 	@Test
 	public void setBucketCapacity() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setBucketCapacity(3);
 		assertEquals(3, cache.getBucketCapacity());
 	}
 	
 	@Test
 	public void testSetBucketCapacityLessThanEarlierCapacityWithNoDataInBucket() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setBucketCapacity(2);
 		assertEquals(2, cache.getBucketCapacity());
 	}
 
 	@Test
 	public void testSetBucketCapacityLessThanEarlierCapacity() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -133,14 +134,14 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testSetBucketCapacityGreaterThanEarlierCapacity() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setBucketCapacity(7);
 		assertEquals(7, cache.getBucketCapacity());
 	}
 
 	@Test
 	public void testClearCacheByKey() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -150,7 +151,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testClearAllCache() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -160,7 +161,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetTotalEntries() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -171,7 +172,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithCapacityLessThanOne() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(-1),
+		           () -> new BucketController(-1),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -182,7 +183,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithCapacityGreaterThanTwoHundread() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(201),
+		           () -> new BucketController(201),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -193,7 +194,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithInvalidKey() {
-		cache = new CacheController(14);
+		cache = new BucketController(14);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache(" ", "avc"),
@@ -205,7 +206,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithInvalidKeyAsNull() {
-		cache = new CacheController(14);
+		cache = new BucketController(14);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache(null, "avc"),
@@ -217,7 +218,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithValueAsNull() {
-		cache = new CacheController(14);
+		cache = new BucketController(14);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache("Test", null),
@@ -229,7 +230,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testGetTTL() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -238,7 +239,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetTTL() {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -248,7 +249,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetTTLWithAutoCacheClearAfterBucketMigration() throws InterruptedException {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		Thread.sleep(1000);
 		cache.setCache("second", "value2");
@@ -263,13 +264,13 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testIsEmptyMethodTrueCondition() throws InterruptedException {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		assertTrue(cache.isEmpty());
 	}
 	
 	@Test
 	public void testIsEmptyMethodFalseCondition() throws InterruptedException {
-		cache = new CacheController(capacity);
+		cache = new BucketController(capacity);
 		cache.setCache("first", "value1");
 		assertFalse(cache.isEmpty());
 	}
@@ -280,14 +281,14 @@ public class CacheBucketIntegrationTest {
 	 */
 	@Test
 	public void testCacheControllerWithCapacityAndTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		long actualTTL = cache.getBucketTTL();
 		assertEquals(bucketTTL, actualTTL);
 	}
 
 	@Test
 	public void testSetCacheWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		String value = "value1";
 		cache.setCache("key1", value);
 		assertEquals(value, cache.getCache("key1"));
@@ -295,7 +296,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testGetCacheWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -304,7 +305,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testGetCacheWithBucketTTLWhenWrongKeyPassedAndMethodReturnsNull() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -313,7 +314,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testGetAllWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -326,7 +327,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testOldestCacheRemovalWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -339,20 +340,20 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testGetBucketCapacityWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		assertEquals(capacity, cache.getBucketCapacity());
 	}
 	
 	@Test
 	public void setBucketCapacityWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setBucketCapacity(3);
 		assertEquals(3, cache.getBucketCapacity());
 	}
 
 	@Test
 	public void testSetBucketCapacityLessThanEarlierCapacityWithBucketTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -365,14 +366,14 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testSetBucketCapacityGreaterThanEarlierCapacityWithTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setBucketCapacity(7);
 		assertEquals(7, cache.getBucketCapacity());
 	}
 
 	@Test
 	public void testClearCacheByKeyWithTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -382,7 +383,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testClearAllCacheWithTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -392,7 +393,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testGetTotalEntriesWithTTL() {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -402,7 +403,7 @@ public class CacheBucketIntegrationTest {
 
 	@Test
 	public void testAutoCacheClear() throws InterruptedException {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		Thread.sleep(5500);
 		cache.setCache("second", "value2");
@@ -414,7 +415,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetBucketTTLLessThanPreviousTTL() throws InterruptedException {
-		cache = new CacheController(capacity, 10000);
+		cache = new BucketController(capacity, 10000);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -425,7 +426,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetBucketTTLMoreThanPreviousTTL() throws InterruptedException {
-		cache = new CacheController(capacity, 1000);
+		cache = new BucketController(capacity, 1000);
 		cache.setCache("first", "value1");
 		cache.setCache("second", "value2");
 		cache.setCache("third", "value3");
@@ -438,7 +439,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithCapacityLessThanOneWithBucketTTLMethod() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(-1, 1000),
+		           () -> new BucketController(-1, 1000),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -449,7 +450,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithCapacityGreaterThanTwoHundreadWithBucketTTLMethod() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(201,15000),
+		           () -> new BucketController(201,15000),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -460,7 +461,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithInvalidKeyWithBucketTTLMethod() {
-		cache = new CacheController(14,2000);
+		cache = new BucketController(14,2000);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache(" ", "avc"),
@@ -472,7 +473,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithInvalidKeyAsNullWithBucketTTLMethod() {
-		cache = new CacheController(14,2000);
+		cache = new BucketController(14,2000);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache(null, "avc"),
@@ -484,7 +485,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetCacheWithValueAsNullWithBucketTTLMethod() {
-		cache = new CacheController(14,20000);
+		cache = new BucketController(14,20000);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setCache("Test", null),
@@ -499,7 +500,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithTTLGreaterThan14400000WithBucketTTLMethod() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(14, 144000001),
+		           () -> new BucketController(14, 144000001),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -510,7 +511,7 @@ public class CacheBucketIntegrationTest {
 	public void testSetBucketWithTTLLessThanZeroWithBucketTTLMethod() {
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
-		           () -> new CacheController(14, -123),
+		           () -> new BucketController(14, -123),
 		           "Expected doThing() to throw, but it didn't"
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
@@ -519,7 +520,7 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testSetBucketWhileSettingTTLWithWrongValue() {
-		cache = new CacheController(14,20000);
+		cache = new BucketController(14,20000);
 		IllegalArgumentException thrown = assertThrows(
 		           IllegalArgumentException.class,
 		           () -> cache.setBucketTTL(-100),
@@ -531,13 +532,13 @@ public class CacheBucketIntegrationTest {
 	
 	@Test
 	public void testIsEmptyMethodTrueConditionWithBucketTTLMethod() throws InterruptedException {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		assertTrue(cache.isEmpty());
 	}
 	
 	@Test
 	public void testIsEmptyMethodFalseConditionWithBucketTTLMethod() throws InterruptedException {
-		cache = new CacheController(capacity, bucketTTL);
+		cache = new BucketController(capacity, bucketTTL);
 		cache.setCache("first", "value1");
 		assertFalse(cache.isEmpty());
 	}
