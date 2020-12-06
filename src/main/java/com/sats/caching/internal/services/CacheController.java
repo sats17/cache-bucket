@@ -158,4 +158,14 @@ public class CacheController implements CacheBucket {
 		return cacheService.getTotalEntries();
 	}
 
+	/**
+	 * Returns true if bucket has no cache present, otherwise false.
+	 * 
+	 * @return boolean : true if bucket is empty, otherwise false.
+	 */
+	@Override
+	public boolean isEmpty() {
+		return this.getTotalEntries() <= 0 ? true : false;
+	}
+
 }

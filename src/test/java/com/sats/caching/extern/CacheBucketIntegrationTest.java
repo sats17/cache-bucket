@@ -1,6 +1,7 @@
 package com.sats.caching.extern;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -259,6 +260,19 @@ public class CacheBucketIntegrationTest {
 		assertEquals(0, cache.getTotalEntries());
 		assertEquals(500, cache.getBucketTTL());
 	}
+	
+	@Test
+	public void testIsEmptyMethodTrueCondition() throws InterruptedException {
+		cache = new CacheController(capacity);
+		assertTrue(cache.isEmpty());
+	}
+	
+	@Test
+	public void testIsEmptyMethodFalseCondition() throws InterruptedException {
+		cache = new CacheController(capacity);
+		cache.setCache("first", "value1");
+		assertFalse(cache.isEmpty());
+	}
 
 
 	/*
@@ -513,5 +527,18 @@ public class CacheBucketIntegrationTest {
 		    );
 		assertTrue(thrown.getClass().equals(IllegalArgumentException.class));
 		assertEquals(thrown.getMessage(), BUCKET_TTL_NOT_VALID_MESSAGE);
+	}
+	
+	@Test
+	public void testIsEmptyMethodTrueConditionWithBucketTTLMethod() throws InterruptedException {
+		cache = new CacheController(capacity, bucketTTL);
+		assertTrue(cache.isEmpty());
+	}
+	
+	@Test
+	public void testIsEmptyMethodFalseConditionWithBucketTTLMethod() throws InterruptedException {
+		cache = new CacheController(capacity, bucketTTL);
+		cache.setCache("first", "value1");
+		assertFalse(cache.isEmpty());
 	}
 }
