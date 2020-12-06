@@ -90,5 +90,12 @@ public interface CacheBucket {
 	 * @return int : total count in integer for bucket.
 	 */
 	public int getTotalEntries();
+	
+	/**
+	 * Returns true if bucket has no cache present, otherwise false.
+	 * 
+	 * @return boolean : true if bucket is empty, otherwise false.
+	 */
+	public boolean isEmpty();
 
 }
