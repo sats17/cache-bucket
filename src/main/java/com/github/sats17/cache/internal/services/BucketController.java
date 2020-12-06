@@ -1,9 +1,10 @@
-package com.sats.caching.internal.services;
+package com.github.sats17.cache.internal.services;
+
+import static com.github.sats17.cache.internal.services.CommonValidation.*;
 
 import java.util.Map;
 
-import com.sats.caching.extern.CacheBucket;
-import static com.sats.caching.internal.services.CommonValidation.*;
+import com.github.sats17.cache.extern.CacheBucket;
 
 /**
  * Implementation of cache bucket
@@ -12,7 +13,7 @@ import static com.sats.caching.internal.services.CommonValidation.*;
  * @author Sats17
  * 
  */
-public class CacheController implements CacheBucket {
+public class BucketController implements CacheBucket {
 
 	/**
 	 * Constructor creates the cache bucket with given capacity and TTL.
@@ -25,7 +26,7 @@ public class CacheController implements CacheBucket {
 	 * @throws IllegalArgumentException when capacity and timeToLive does not meet
 	 *                                  it's conditions.
 	 */
-	public CacheController(int capacity, long timeToLive) {
+	public BucketController(int capacity, long timeToLive) {
 		validateBucketCapacity(capacity);
 		validateBucketTTL(timeToLive);
 		cacheService.createBucket(capacity, timeToLive);
@@ -38,7 +39,7 @@ public class CacheController implements CacheBucket {
 	 *                 Bucket, capacity should be between 1 to 200.
 	 * @throws IllegalArgumentException when capacity does not meet it's conditions.
 	 */
-	public CacheController(int capacity) {
+	public BucketController(int capacity) {
 		validateBucketCapacity(capacity);
 		cacheService.createBucket(capacity);
 	}
