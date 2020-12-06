@@ -9,7 +9,7 @@
 	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>InMemory-Cache-Bucket</name>
+	<name>Cache-Bucket</name>
 	<description>Light weight in-memory cache bucket</description>
 	<url>https://github.com/sats17/Cache-Bucket</url>
 
