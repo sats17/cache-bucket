@@ -4,14 +4,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.sats.caching</groupId>
-	<artifactId>serverside-caching</artifactId>
-	<version>0.0.1</version>
+	<groupId>com.github.sats17</groupId>
+	<artifactId>cache-bucket</artifactId>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
-	<name>ServerSide-InMemory-Cache</name>
-	<description>In memory server side cache library for maven</description>
-	<url>https://github.com/sats17/In-Memory-Cache-Java</url>
+	<name>InMemory-Cache-Bucket</name>
+	<description>Light weight in-memory cache bucket</description>
+	<url>https://github.com/sats17/Cache-Bucket</url>
 
 	<developers>
 		<developer>
@@ -29,7 +29,7 @@
 		<java.version>8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<sonar.projectKey>sats17_In-Memory-Cache-Java</sonar.projectKey>
+		<sonar.projectKey>Cache-Bucket</sonar.projectKey>
 		<sonar.organization>sats17</sonar.organization>
 		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.test.exclusions>

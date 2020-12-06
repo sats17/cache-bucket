@@ -1,6 +1,6 @@
-package com.sats.caching.internal.services;
+package com.github.sats17.cache.internal.services;
 
-import static com.sats.caching.internal.services.Constants.*;
+import static com.github.sats17.cache.internal.services.Constants.*;
 /**
  * Validation class contains all common validation methods.
  * 
@@ -8,7 +8,7 @@ import static com.sats.caching.internal.services.Constants.*;
  * @author Sats17
  *
  */
-public class CommonValidation {
+class CommonValidation {
 
 	private CommonValidation() {
 	}

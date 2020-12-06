@@ -1,4 +1,4 @@
-package com.sats.caching.internal.services;
+package com.github.sats17.cache.internal.services;
 
 import java.util.HashMap;
 import java.util.Map;
