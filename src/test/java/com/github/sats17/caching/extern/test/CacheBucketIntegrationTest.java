@@ -42,29 +42,6 @@ public class CacheBucketIntegrationTest {
 	}
 
 	/*
-	 * Perf test user journey
-	 */
-	CacheBucket perfBucket = new BucketController(100);
-
-	@Test
-	public void perfSetCache() {
-		String key = "key";
-		String value = "value";
-		for (int i = 0; i < 50; i++) {
-			perfBucket.setCache(key + i, value + i);
-		}
-	}
-
-	@Test
-	public void perfGetCache() {
-		String key = "key";
-		String value = "value";
-		for (int i = 0; i < 50; i++) {
-			perfBucket.getCache(key + i);
-		}
-	}
-
-	/*
 	 * All tests for Cache with capacity only.
 	 */
 	@Test
