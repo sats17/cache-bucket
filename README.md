@@ -40,7 +40,7 @@ bucket.getAll();
 ```
 #### Clear cache by key
 ```
-bucket.clear("key");
+bucket.clear(key);
 ```
 #### Clear all cache from bucket
 ```
