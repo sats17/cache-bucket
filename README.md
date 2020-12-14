@@ -3,44 +3,46 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=alert_status)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
 
 
-# In Memory Serverside Cache
-Simple In-Memory java cache library.
-<br>
-## How to use
-Clone the repository, create jar and use it in your project.
+# Cache-Bucket
+In memory cache bucket, used to store server side cache
 <br>
 
-#### Create cache
+#### Imports
 ```
-import com.sats.main.CacheController;
-int size = 10;
-CacheController controller = new CacheController(size);
+import com.github.sats17.cache.extern.CacheBucket;
+import com.github.sats17.cache.internal.services.BucketController;
 ```
 
-#### Create cache with time limit
+#### Initialize bucket with size
 ```
-import com.sats.main.CacheController;
-int size = 10;
-long timeLimit = 1000 * 60;
-CacheController controller = new CacheController(size,timeLimit);
+int size = 100;
+CacheBucket bucket = new BucketController(size);
+```
+#### Initialize bucket with size and TTL(Newly created cache will be expires after TTL)
+```
+int size = 100;
+long ttl = 60000; // 60 seconds
+CacheBucket bucket = new BucketController(size, ttl);
 ```
 #### Set cache
 ```
-controller.setCache("key", "value");
+String key = "cacheKey";
+Object value = new Object();
+bucket.setCache(key, value);
 ```
-#### Get cache by key
+#### Retrieve cache by key
 ```
-controller.getCache("key");
+bucket.getCache(key);
 ```
-#### Get all cache
+#### Retrieve all cache from bucket
 ```
-controller.getAll();
+bucket.getAll();
 ```
 #### Clear cache by key
 ```
-controller.clear("key");
+bucket.clear("key");
 ```
-#### Clear all
+#### Clear all cache from bucket
 ```
-controller.clear();
+bucket.clear();
 ```
