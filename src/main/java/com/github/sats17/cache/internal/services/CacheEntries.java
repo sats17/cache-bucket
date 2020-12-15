@@ -1,7 +1,7 @@
 package com.github.sats17.cache.internal.services;
 
 /**
- * CacheEntries pojo class, contains Cache value and it's metadata.
+ * Object contains cache value and it's metadata
  * 
  * @version 1.0.0
  * @author Sats17
@@ -20,36 +20,36 @@ class CacheEntries {
 	private Object value;
 
 	/**
-	 * This method returns cache created time
+	 * Returns cache created time
 	 * 
-	 * @return createdTimeStamp
+	 * @return cache created timestamp
 	 */
 	public long getCreatedTimeStamp() {
 		return createdTimeStamp;
 	}
-	
+
 	/**
-	 * Constructor that stores cache value.
+	 * Constructor use to stores cache values
 	 * 
-	 * @param value
+	 * @param cache value
 	 */
 	public CacheEntries(Object value) {
 		this.value = value;
 	}
 
 	/**
-	 * This method return cache value
+	 * Returns cache value
 	 * 
-	 * @return value
+	 * @return cache value
 	 */
 	public Object getValue() {
 		return value;
 	}
 
 	/**
-	 * This method set cache value.
+	 * This method set cache value
 	 * 
-	 * @param value
+	 * @param cache value
 	 */
 	public void setValue(Object value) {
 		this.value = value;
