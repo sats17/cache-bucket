@@ -24,6 +24,11 @@
 			</roles>
 		</developer>
 	</developers>
+	
+	<scm>
+		<url>https://github.com/sats17/cache-bucket/</url>
+		<connection>scm:git:ssh://git@github.com:sats17/Cache-Bucket.git</connection>
+	</scm>
 
 	<properties>
 		<java.version>8</java.version>
