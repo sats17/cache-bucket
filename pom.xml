@@ -24,7 +24,7 @@
 			</roles>
 		</developer>
 	</developers>
-	
+
 	<scm>
 		<url>https://github.com/sats17/cache-bucket/</url>
 		<connection>scm:git:ssh://git@github.com:sats17/Cache-Bucket.git</connection>
@@ -81,6 +81,20 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

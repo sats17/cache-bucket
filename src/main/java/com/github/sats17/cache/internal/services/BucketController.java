@@ -67,9 +67,9 @@ public class BucketController implements CacheBucket {
 	/**
 	 * Provides cache object from bucket for matching key
 	 * <p>
-	 * Note: Method returns cache value as {@link java.lang.object} type. You need
-	 * to perform casting from type {@link java.lang.Object} to your cache value
-	 * type, if you needed
+	 * Note: Method returns cache value as java.lang.object type. You need to
+	 * perform casting from type java.lang.Object to your cache value type, if you
+	 * needed
 	 * </p>
 	 * 
 	 * @param key Unique cache key that present in cache bucket. Key should not be
@@ -86,12 +86,12 @@ public class BucketController implements CacheBucket {
 	 * Provides map contains key and cache value from bucket
 	 * 
 	 * <p>
-	 * Note: Method returns cache value as {@link java.lang.object} type. You need
-	 * to perform casting from type {@link java.lang.Object} to your cache value
-	 * type, if you needed
+	 * Note: Method returns cache value as java.lang.object type. You need to
+	 * perform casting from type java.lang.Object to your cache value type, if you
+	 * needed
 	 * </p>
 	 * 
-	 * @return {@link java.util.Map} contains cache key and value
+	 * @return java.util.Map contains cache key and value
 	 */
 	public Map<String, Object> getAll() {
 		return cacheService.getAll();
