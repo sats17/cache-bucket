@@ -1,7 +1,7 @@
 package com.github.sats17.cache.internal.services;
 
 /**
- * Contains constants of library.
+ * Contains all constants of library
  * 
  * @version 1.0.0
  * @author Sats17
