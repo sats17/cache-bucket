@@ -1,16 +1,15 @@
-name: Build
+name: pre-release
 
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request. 
   push:
     branches:
-      - master
       - dev
       - feature/*
       - bugfix/*
   pull_request:
-      branches: [dev, master]
+      branches: [dev]
 
 jobs:
   build:

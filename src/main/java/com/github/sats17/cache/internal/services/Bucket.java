@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Bucket class contains all keys and cache.
+ * Contains all methods related to bucket
  * 
  * @version 1.0.0
  * @author Sats17
@@ -21,22 +21,24 @@ import java.util.concurrent.TimeUnit;
 class Bucket {
 
 	/**
-	 * Bucket TTL variable.
+	 * Bucket TTL variable
 	 */
 	private long timeToLive = -1;
 
 	/**
-	 * Bucket capacity variable.
+	 * Bucket capacity variable
 	 */
 	private int bucketCapacity = -1;
 
 	/**
-	 * Bucket index storage, this consist all keys.
+	 * Indexing for bucket, contains all cache keys
 	 */
 	private List<String> index;
 
 	/**
-	 * Map contains key and cacheEntry.
+	 * Cache bucket
+	 * 
+	 * @see java.util.concurrent.ConcurrentMap
 	 */
 	private ConcurrentMap<String, CacheEntries> cache;
 
@@ -45,7 +47,9 @@ class Bucket {
 	}
 
 	/**
-	 * Constructor for bucket.
+	 * Bucket constructor, initialize the bucket having given bucketCapacity
+	 * 
+	 * @param bucketCapacity Bucket capacity
 	 */
 	public Bucket(int bucketCapacity) {
 		this.setIndex(new ArrayList<>(bucketCapacity));
@@ -54,10 +58,10 @@ class Bucket {
 	}
 
 	/**
-	 * Parameterized constructor for cache. It will initialized scheduler for auto
-	 * cache clearing.
+	 * Parameterized constructor, Initialize the bucket with bucketCapacity and TTL
 	 * 
-	 * @param timeToLive : TTL value.
+	 * @param bucketCapacity Bucket capacity
+	 * @param timeToLive     TTL value
 	 */
 	public Bucket(int bucketCapacity, long timeToLive) {
 		this.setIndex(new ArrayList<>(bucketCapacity));
@@ -68,8 +72,8 @@ class Bucket {
 	}
 
 	/**
-	 * This method initialized the scheduler and checks if cache is empty or not for
-	 * every seconds. if cache is not empty then it will call cacheAutoClear method.
+	 * Runs the scheduler and checks if cache is empty or not for every seconds. if
+	 * cache is not empty then it will call cacheAutoClear method.
 	 */
 	private void initializeScheduler() {
 		ScheduledExecutorService schedular = Executors.newSingleThreadScheduledExecutor();
@@ -83,8 +87,8 @@ class Bucket {
 	}
 
 	/**
-	 * This method iterate over cache map and if current timestamp is greater than
-	 * cache createdtimestamp plus TTL then that cache will be clear.
+	 * Iterate over cache bucket and if current timestamp > (createdtimestamp + TTL)
+	 * then that cache will be clear.
 	 */
 	private void cacheAutoClear() {
 		for (Map.Entry<String, CacheEntries> entry : cache.entrySet()) {
@@ -100,63 +104,66 @@ class Bucket {
 	}
 
 	/**
-	 * @return the index
+	 * Returns list of index consist cache keys
+	 * 
+	 * @return the list of index
 	 */
 	public List<String> getIndex() {
 		return index;
 	}
 
 	/**
-	 * @param index the index to set
+	 * Sets the new index
+	 * 
+	 * @param index index list
 	 */
 	public void setIndex(List<String> index) {
 		this.index = index;
 	}
 
 	/**
-	 * This method returns cache bucket.
+	 * Returns cache bucket
 	 * 
-	 * @return ConcurrentHashMap<K, CacheEntries>
+	 * @return cache bucket
 	 */
 	public ConcurrentMap<String, CacheEntries> getCache() {
 		return cache;
 	}
 
 	/**
-	 * This method returns CacheEntries object for matching key.
+	 * Returns CacheEntries(value) for matching key
 	 * 
-	 * @param key : Unique which stores in bucket for particular cache.
-	 * @return CacheEntries
+	 * @param key Cache key
+	 * @return CacheEntries(value)
 	 */
 	public CacheEntries getCache(String key) {
 		return cache.get(key);
 	}
 
 	/**
-	 * This method return size of cache.
+	 * This method return size of cache
 	 * 
-	 * @return size
+	 * @return size of bucket
 	 */
 	public int getBucketCapacity() {
 		return this.bucketCapacity;
 	}
 
 	/**
-	 * This method sets bucket capacity.
+	 * This method sets bucket capacity
 	 * 
-	 * @param size
-	 * @return void
+	 * @param bucketCapacity size
 	 */
 	public void setBucketCapacity(int bucketCapacity) {
 		this.bucketCapacity = bucketCapacity;
 	}
 
 	/**
-	 * Method shrink the cache bucket for given size.
+	 * Shrink the cache bucket with given size
 	 * 
-	 * @implNote : Method use temporary storage to shrink the bucket. Nothing but
-	 *           creates new bucket with new size and moves all data.
-	 * @param bucketCapacity : bucket capacity.
+	 * @implNote Method uses temporary storage to shrink the bucket, it nothing but
+	 *           creates new bucket with new size and moves all data
+	 * @param bucketCapacity new bucket capacity value
 	 */
 	public void shrinkBucket(int bucketCapacity) {
 		ConcurrentMap<String, CacheEntries> temp = new ConcurrentHashMap<>(bucketCapacity);
@@ -178,19 +185,18 @@ class Bucket {
 	}
 
 	/**
-	 * This method get bucket TTL.
+	 * Provides bucket TTL
 	 * 
-	 * @return timeToLive
+	 * @return TTL value
 	 */
 	public long getTimeToLive() {
 		return this.timeToLive;
 	}
 
 	/**
-	 * This method set bucket TTL.
+	 * Set bucket TTL
 	 * 
-	 * @param timeToLive
-	 * @return void
+	 * @param timeToLive TTL value
 	 */
 	public void setTimeToLive(long timeToLive) {
 		if (this.timeToLive == -1) {
@@ -203,11 +209,10 @@ class Bucket {
 	}
 
 	/**
-	 * This method stores key and value in concurrentHashMap.
+	 * Stores the key and value in bucket object and update the indexing
 	 * 
-	 * @param key
-	 * @param value
-	 * @return void
+	 * @param key cache key
+	 * @param value cache value
 	 */
 	public void setCache(String key, Object value) {
 		this.cache.put(key, new CacheEntries(value));
@@ -215,10 +220,9 @@ class Bucket {
 	}
 
 	/**
-	 * This remove cache by key from concurrentHashMap.
+	 * Clears the cache from bucket for given key
 	 * 
-	 * @param key
-	 * @return void
+	 * @param key cache key
 	 */
 	public void clear(String key) {
 		this.cache.remove(key);
@@ -226,16 +230,16 @@ class Bucket {
 	}
 
 	/**
-	 * This method return total number of keys present in cache.
+	 * Return total number of keys/cache(entries) present in cache
 	 * 
-	 * @return size
+	 * @return size total number of entries
 	 */
 	public int getTotalEntries() {
 		return this.cache.size();
 	}
 
 	/**
-	 * This method clear cache.
+	 * Clears the bucket and index
 	 */
 	public void clear() {
 		this.cache.clear();
@@ -243,7 +247,8 @@ class Bucket {
 	}
 
 	/**
-	 * This method remove oldest value from bucket, using index.
+	 * Remove oldest cache value from bucket
+	 * @implNote get the 0th value from index and clears cache inside bucket accordingly
 	 */
 	public void removeOldestCache() {
 		String oldestKey = this.index.get(0);
