@@ -1,4 +1,4 @@
-name: pre-release-CI
+name: pre-release
 
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
