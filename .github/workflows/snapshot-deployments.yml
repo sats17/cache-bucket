@@ -21,6 +21,6 @@ jobs:
 #       run: mvn -B -Dversion=1.0.0-SNAPSHOT package -Psnapshot --file pom.xml
 
     - name: Publish to GitHub Packages Apache Maven
-      run: mvn -Dversion=1.0.0-SNAPSHOT deploy -Psnapshot -s $GITHUB_WORKSPACE/settings.xml
+      run: mvn -Dversion=1.0.0-SNAPSHOT deploy -Psnapshot --file pom.xml -s $GITHUB_WORKSPACE/settings.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
