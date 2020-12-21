@@ -1,4 +1,4 @@
-name: Snapshot Package Deployments
+name: Snapshot Package Github Deployments
 
 on:
   workflow_dispatch:
