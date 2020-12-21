@@ -1,4 +1,4 @@
-name: Release Package Deployments
+name: Release Package Github Deployments
 
 on:
   workflow_dispatch:
