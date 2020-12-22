@@ -6,6 +6,14 @@
 # Cache-Bucket
 In memory cache bucket, used to store server side cache
 <br>
+#### Dependency
+```
+<dependency>
+  <groupId>com.github.sats17</groupId>
+  <artifactId>cache-bucket</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
 
 #### Imports
 ```
