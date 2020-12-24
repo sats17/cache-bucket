@@ -9,9 +9,9 @@
 	<version>${version}</version>
 	<packaging>jar</packaging>
 
-	<name>Cache-Bucket</name>
+	<name>cache-bucket</name>
 	<description>Light weight in-memory cache bucket</description>
-	<url>https://github.com/sats17/Cache-Bucket</url>
+	<url>https://github.com/sats17/cache-bucket</url>
 
 	<developers>
 		<developer>
@@ -25,11 +25,19 @@
 		</developer>
 	</developers>
 
+	<licenses>
+		<license>
+			<name>MIT License</name>
+			<url>http://www.opensource.org/licenses/mit-license.php</url>
+		</license>
+	</licenses>
+
 	<scm>
 		<url>https://github.com/sats17/cache-bucket/</url>
-		<connection>scm:git:ssh://git@github.com:sats17/Cache-Bucket.git</connection>
+		<connection>scm:git:git://github.com/sats17/cache-bucket.git</connection>
+		<developerConnection>scm:git:git:git@github.com:sats17/cache-bucket.git</developerConnection>
 	</scm>
-
+	
 	<properties>
 
 		<!-- Project version -->
@@ -39,6 +47,10 @@
 		<java.version>8</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<!-- Encoding -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
 
 		<!-- Sonar Properties -->
 		<sonar.projectKey>Cache-Bucket</sonar.projectKey>
