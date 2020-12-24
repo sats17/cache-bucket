@@ -1,11 +1,20 @@
 [![Actions Status](https://github.com/sats17/Cache-Bucket/workflows/Build/badge.svg)](https://github.com/sats17/Cache-Bucket/actions)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=coverage)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=alert_status)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
+[![License](http://img.shields.io/:license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 
 # Cache-Bucket
 In memory cache bucket, used to store server side cache
 <br>
+#### Dependency
+```
+<dependency>
+  <groupId>com.github.sats17</groupId>
+  <artifactId>cache-bucket</artifactId>
+  <version>1.0.0</version>
+</dependency>
+```
 
 #### Imports
 ```
