@@ -7,8 +7,16 @@
 # Cache-Bucket
 In memory cache bucket, used to store server side cache
 <br>
-#### Dependency
-```
+
+Versions
+-----------
+
+|  cache-bucket |
+|:-------------:|
+|   1.0.0       |
+
+#### Maven Dependency
+```xml
 <dependency>
   <groupId>com.github.sats17</groupId>
   <artifactId>cache-bucket</artifactId>
@@ -16,42 +24,48 @@ In memory cache bucket, used to store server side cache
 </dependency>
 ```
 
-#### Imports
-```
+#### Required Imports
+```java
 import com.github.sats17.cache.extern.CacheBucket;
 import com.github.sats17.cache.internal.services.BucketController;
 ```
 
 #### Initialize bucket with size
-```
+```java
 int size = 100;
 CacheBucket bucket = new BucketController(size);
 ```
-#### Initialize bucket with size and TTL(Newly created cache will be expires after TTL)
-```
+#### Initialize bucket with size and TTL
+```java
 int size = 100;
 long ttl = 60000; // 60 seconds
 CacheBucket bucket = new BucketController(size, ttl);
 ```
 #### Set cache
-```
+```java
 String key = "cacheKey";
 Object value = new Object();
 bucket.setCache(key, value);
 ```
 #### Retrieve cache by key
+```java
+Object value = bucket.getCache(key); 
 ```
-bucket.getCache(key);
+###### note : By default get cache method returns cache value type as Object, You need to explicitly cast the value according to your use
+```java
+CacheBucket bucket = new BucketController(10,100000);
+bucket.setCache("key", "cacheValue");
+String value = (String) bucket.getCache("test");
 ```
 #### Retrieve all cache from bucket
-```
-bucket.getAll();
+```java
+Map<String, Object> values = bucket.getAll();
 ```
 #### Clear cache by key
-```
+```java
 bucket.clear(key);
 ```
 #### Clear all cache from bucket
-```
+```java
 bucket.clear();
 ```
