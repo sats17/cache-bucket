@@ -3,8 +3,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Cache-Bucket&metric=alert_status)](https://sonarcloud.io/dashboard?id=Cache-Bucket)
 [![License](http://img.shields.io/:license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
-<a>
-<img align="right" height="70px" src="https://github.com/sats17/cache-bucket/bucket.png">
+<a href="https://github.com/sats17/cache-bucket">
+<img align="right" height="100px" src="https://github.com/sats17/cache-bucket/blob/master/bucket.png">
 </a>
 
 # Cache-Bucket
