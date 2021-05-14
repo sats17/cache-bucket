@@ -72,3 +72,6 @@ bucket.clear(key);
 ```java
 bucket.clear();
 ```
+
+#### Demo project
+https://github.com/sats17/cache-bucket-demo
